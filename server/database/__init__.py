@@ -1,8 +1,10 @@
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 def get_database():
-    CONNECTION_STRING = "mongodb+srv://Admin:Admin@cluster0.7odts9s.mongodb.net/"
-    client = MongoClient(CONNECTION_STRING)
+    client = MongoClient(os.getenv("CONNECTION_STRING"))
     return client['BlockMyShow']
 
 def create_user(name:str,email:str,password:str): 
@@ -14,9 +16,5 @@ def create_user(name:str,email:str,password:str):
         "password": password
     }
     result = user_collection.insert_one(user_data)
-    print(f"User inserted with ID: {result.inserted_id}")
+    #print(f"User inserted with ID: {result.inserted_id}")
 
-# Example usage
-if __name__ == "__main__":
-    db = get_database()
-    print("Database connection successful!")
