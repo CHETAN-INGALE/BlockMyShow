@@ -1,26 +1,35 @@
-from fastapi import FastAPI
+# Main api server made using fast api
+
+from fastapi import FastAPI, status
 from pydantic import BaseModel
-from database import get_database
+from contextlib import asynccontextmanager
+import secrets
+from dbresponder import checkUser, disconnect, updateSessionKey
+from mailer import sendEmail
 
-class Item(BaseModel):
-    name: str
-    description: str | None = None
-    price: float
-    tax: float | None = None
+class Email(BaseModel):
+    email: str
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+    
+    disconnect()
 
 app = FastAPI()
 
 
-@app.post("/items/")
-async def create_item(item: Item):
-    return item
-
-@app.get("/")
-async def root():
-    db = get_database()
-    collection=db.get_collection('user')
-    data=collection.find_one({'data':1})
-    id=data["_id"]
-    d=data["data"]
-    return {"message": "Hello BlockMyShow Users","Database":d}
+@app.post("/login/",  status_code=status.HTTP_202_ACCEPTED)
+async def create_item(email: Email):
+    newSessionKey = secrets.token_hex(64)
+    # newUser = checkUser(email.email)
+    
+    sendMail = sendEmail(email.email, newSessionKey)
+    if sendMail == False:
+        return status.HTTP_500_INTERNAL_SERVER_ERROR, "Error sending email"
+    
+    addSKeyToDB = updateSessionKey(email.email, newSessionKey)
+    if addSKeyToDB == False:
+        return status.HTTP_500_INTERNAL_SERVER_ERROR, "Error updating session key"
+    
+    return status.HTTP_202_ACCEPTED, "Email sent successfully"

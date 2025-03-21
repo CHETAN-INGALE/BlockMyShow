@@ -25,3 +25,4 @@ build/
 #Credential files
 .env
 *.json
+*.test
