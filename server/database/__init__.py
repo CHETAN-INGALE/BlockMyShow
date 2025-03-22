@@ -3,7 +3,8 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime
 import random
-from database.model.user_data import create_user_data_collection
+from database.model import user_data, event_data
+from database.handler import UserHandler
 
 load_dotenv()
 
@@ -25,13 +26,13 @@ def initialize_database():
         if "user_data" in db.list_collection_names():
             print("user_data collection already exists. Skipping creation.")
         else:
-            create_user_data_collection(db,'user_data')
+            user_data.create_user_data_collection(db,'user_data')
             print("Database initialization completed successfully.")
         
         if "event_data" in db.list_collection_names():
             print("user_data collection already exists. Skipping creation.")
         else:
-            create_user_data_collection(db,'event_data')
+            event_data.create_user_event_collection(db,'event_data')
             print("Database initialization completed successfully.")
     except Exception as e:
         print(f"Error during database initialization: {e}")

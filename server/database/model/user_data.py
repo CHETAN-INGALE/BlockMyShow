@@ -1,9 +1,9 @@
-def create_user_data_collection(db,collection_name):
+def create_user_data_collection(db, collection_name):
     result = db.create_collection(collection_name, validator={
         '$jsonSchema': {
             'bsonType': 'object',
             'additionalProperties': False,
-            'required': ['first_name','email','mobile_number', 'user_type'],
+            'required': ['first_name', 'email', 'mobile_number', 'user_type'],
             'properties': {
                 '_id': {
                     'bsonType': 'objectId',
@@ -40,4 +40,14 @@ def create_user_data_collection(db,collection_name):
             }
         }
     })
-    print(f"Result: {result}")
+    db[collection_name].create_index('email', unique=True)    
+    print(f"Collection created with result: {result}")
+
+# document in the user_data collection:
+#document = {
+#     "first_name": "John",
+#     "last_name": "Doe",
+#     "email": "someone1gmail.com",
+#     "mobile_number": "1234567890",
+#     "user_type": "customer",
+# }
