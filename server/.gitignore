@@ -26,3 +26,4 @@ build/
 .env
 *.json
 *.test
+moviedb.py

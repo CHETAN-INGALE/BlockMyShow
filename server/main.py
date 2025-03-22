@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from contextlib import asynccontextmanager
 import secrets
 from mailer import sendEmail
-from database import disconnect, checkUser, updateSessionKey
+from database import disconnect, verifyUser, updateSessionKey, get_random_movie
 
 class Email(BaseModel):
     email: str
@@ -40,7 +40,7 @@ async def create_item(email: Email):
 
 @app.post("/auth/")
 async def create_item(authData: Auth):
-    authStatus = checkUser(authData.email, authData.sessionKey)
+    authStatus = verifyUser(authData.email, authData.sessionKey)
     if authStatus == 404:
         return status.HTTP_404_NOT_FOUND, "User not found"
     elif authStatus == 401:
@@ -49,3 +49,7 @@ async def create_item(authData: Auth):
         return status.HTTP_201_CREATED, "User data incomplete"
     else:
         return status.HTTP_200_OK, "User authenticated"
+
+@app.get("/movieAiringNow/")
+async def getRandomRovie():
+    return get_random_movie()

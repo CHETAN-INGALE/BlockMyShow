@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
 from datetime import datetime
+import random
 from database.model.user_data import create_user_data_collection
 
 load_dotenv()
@@ -70,7 +71,16 @@ def updateSessionKey(email, sessionKey):
         print("An error occurred while updating session key:", str(e))
         return False
 
-
+def get_random_movie():
+    try:
+        all_movies = list(movies_collection.find())
+        if not all_movies:
+            return {"message": "No movies found in the database."}
+        random_movie = random.choice(all_movies)
+        random_movie["_id"] = str(random_movie["_id"])
+        return random_movie
+    except Exception as e:
+        return {"error": str(e)}
 
 
 
@@ -83,4 +93,5 @@ def disconnect():
 initialize_database()
 db = client["BlockMyShow"]
 user_collection = db["user_data"]
+movies_collection = db["movies"]
 print("MongoDB connected to DB: BlockMyShow !!!")
