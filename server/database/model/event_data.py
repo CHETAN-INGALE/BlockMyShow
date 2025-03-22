@@ -3,28 +3,37 @@ def create_user_event_collection(db, collection_name):
     result = db.create_collection(collection_name, validator={
         "$jsonSchema": {
             "bsonType": "object",
-            "required": ["name", "date", "location", "price"],
+            "required": ["event_id", "user_id", "event_name", "event_datetime", "location", "total_seats", "available_seats"],
             "properties": {
-                "name": {
+                "event_id": {
+                    "bsonType": "objectId",
+                    "description": "Event ID must be a valid ObjectId and is required"
+                },
+                "user_id": {
+                    "bsonType": "objectId",
+                    "description": "User ID must be a valid ObjectId and is required"
+                },
+                "event_name": {
                     "bsonType": "string",
                     "description": "Event name must be a string and is required"
                 },
-                "date": {
+                "event_datetime": {
                     "bsonType": "date",
-                    "description": "Event date must be a valid date and is required"
+                    "description": "Event date and time must be a valid date and is required"
                 },
                 "location": {
                     "bsonType": "string",
                     "description": "Event location must be a string and is required"
                 },
-                "price": {
-                    "bsonType": "double",
+                "total_seats": {
+                    "bsonType": "int",
                     "minimum": 0,
-                    "description": "Event price must be a non-negative number and is required"
+                    "description": "Total number of seats must be a non-negative integer and is required"
                 },
-                "description": {
-                    "bsonType": "string",
-                    "description": "Event description is optional but must be a string if provided"
+                "available_seats": {
+                    "bsonType": "int",
+                    "minimum": 0,
+                    "description": "Available number of seats must be a non-negative integer and is required"
                 }
             }
         }
