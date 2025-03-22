@@ -1,24 +1,19 @@
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
+from datetime import datetime
 from database.model.user_data import create_user_data_collection
+
 load_dotenv()
 
-def connect():
-    MONGO_URI = os.getenv("CONNECTION_STRING")
-    client = MongoClient(MONGO_URI)
-    print("Connected to MongoDB")
-    return client
 
-def disconnect(client):
-    client.close()
-    print("MongoDB connection closed!")
+MONGO_URI = os.getenv("MONGODB_CONN_STRING")
+client = MongoClient(MONGO_URI)
+print("MongoDB clinet created successfully!")
+
 
 def initialize_database():
     try:
-        # Initialize the user_data collection
-        client= connect()
-
         if "BlockMyShow" in client.list_database_names():
             print("BlockMyShow database already exists. Skipping creation.")
         else:
@@ -39,17 +34,44 @@ def initialize_database():
             print("Database initialization completed successfully.")
     except Exception as e:
         print(f"Error during database initialization: {e}")
-    disconnect(client)
+
+
+def disconnect():
+    client.close()
+    print("MongoDB connection closed!")
+    
+def checkUser(email):
+    user = user_collection.find_one({"email": email})
+    return user is not None
+
+def updateSessionKey(email, sessionKey):
+    try:
+        user_collection.update_one(
+            {"email": email},
+            {
+                "$set": {
+                    "session_token": sessionKey,
+                    "last_session_token_time": datetime.now()
+                }
+            },
+            upsert=True # used to create a new user if there is no user with the given email
+        )
+        return True
+    except Exception as e:
+        print("An error occurred while updating session key:", str(e))
+        return False
+
+
+
+
+
+
+
+def disconnect():
+    client.close()
+    print("MongoDB connection closed!")
 
 initialize_database()
-
-# def create_user(name: str, email: str, password: str):
-#     user_data = {
-#         "name": name,
-#         "email": email,
-#         "password": password
-#     }
-#     result = user_collection.insert_one(user_data)
-#     print(f"User inserted with ID: {result.inserted_id}")
-
-
+db = client["BlockMyShow"]
+user_collection = db["user_data"]
+print("MongoDB connected to DB: BlockMyShow !!!")
