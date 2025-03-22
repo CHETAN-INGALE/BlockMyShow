@@ -4,8 +4,9 @@ from fastapi import FastAPI, status
 from pydantic import BaseModel
 from contextlib import asynccontextmanager
 import secrets
-from dbresponder import checkUser, disconnect, updateSessionKey
+from dbresponder import checkUser, updateSessionKey
 from mailer import sendEmail
+from database import connect,disconnect
 
 class Email(BaseModel):
     email: str
