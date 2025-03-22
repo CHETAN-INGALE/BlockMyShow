@@ -40,9 +40,18 @@ def disconnect():
     client.close()
     print("MongoDB connection closed!")
     
-def checkUser(email):
+def verifyUser(email, session_token):
     user = user_collection.find_one({"email": email})
-    return user is not None
+    if not user:
+        return 404
+
+    if user.get('session_token') != session_token:
+        return 401
+
+    if not user.get('first_name') or not user.get('last_name'):
+        return 201
+
+    return 200
 
 def updateSessionKey(email, sessionKey):
     try:

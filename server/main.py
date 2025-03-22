@@ -10,6 +10,10 @@ from database import disconnect, checkUser, updateSessionKey
 class Email(BaseModel):
     email: str
 
+class Auth(BaseModel):
+    email: str
+    sessionKey: str
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     yield
@@ -19,17 +23,29 @@ async def lifespan(app: FastAPI):
 app = FastAPI()
 
 
-@app.post("/login/",  status_code=status.HTTP_202_ACCEPTED)
+@app.post("/login/")
 async def create_item(email: Email):
     newSessionKey = secrets.token_hex(64)
     # newUser = checkUser(email.email)
-    
-    sendMail = sendEmail(email.email, newSessionKey)
-    if sendMail == False:
-        return status.HTTP_500_INTERNAL_SERVER_ERROR, "Error sending email"
     
     addSKeyToDB = updateSessionKey(email.email, newSessionKey)
     if addSKeyToDB == False:
         return status.HTTP_500_INTERNAL_SERVER_ERROR, "Error updating session key"
     
+    sendMail = sendEmail(email.email, newSessionKey)
+    if sendMail == False:
+        return status.HTTP_500_INTERNAL_SERVER_ERROR, "Error sending email"
+    
     return status.HTTP_202_ACCEPTED, "Email sent successfully"
+
+@app.post("/auth/")
+async def create_item(authData: Auth):
+    authStatus = checkUser(authData.email, authData.sessionKey)
+    if authStatus == 404:
+        return status.HTTP_404_NOT_FOUND, "User not found"
+    elif authStatus == 401:
+        return status.HTTP_401_UNAUTHORIZED, "Unauthorized"
+    elif authStatus == 201:
+        return status.HTTP_201_CREATED, "User data incomplete"
+    else:
+        return status.HTTP_200_OK, "User authenticated"
