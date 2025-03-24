@@ -1,0 +1,163 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+  }
+  
+  body {
+    background-color: #e3e4e8;
+    color: #212020;
+    padding: 20px;
+  }
+  
+  /* Page title styling */
+  h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin: 20px 0 40px 0;
+    color: #e50914;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  /* Movie grid layout */
+  .movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Movie card styling */
+  .movie-card {
+    background: linear-gradient(145deg, #a6a7ae, #e8eaef);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(215, 212, 212, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .movie-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 30px rgba(189, 183, 183, 0.6);
+  }
+  
+  /* Movie poster image */
+  .movie-poster {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+  }
+  
+  /* Movie details section */
+  .movie-details {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Movie title styling - now explicitly white */
+  .movie-title {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+  
+  /* This ensures all movie titles are white, even without the specific class */
+  .movie-card h2, .movie-card h3, .movie-card .title {
+    color: #ffffff;
+  }
+  
+  /* Book Now button styling */
+  .book-now {
+    background-color: #e50914;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+    width: 80%;
+    text-decoration: none;
+  }
+  
+  .book-now:hover {
+    background-color: #f40612;
+    transform: scale(1.05);
+  }
+  
+  /* Ticket icon */
+  .ticket-icon {
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 1.1rem;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .movie-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    
+    .movie-poster {
+      height: 350px;
+    }
+    
+    .movie-title {
+      font-size: 1.4rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .movie-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+  }
+  
+  /* Now Showing section animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .now-showing {
+    animation: fadeIn 1s ease-out;
+  }
+  
+  /* Optional: Add a subtle hover effect on poster images */
+  .movie-poster {
+    transition: opacity 0.3s ease;
+  }
+  
+  .movie-card:hover .movie-poster {
+    opacity: 0.8;
+  }
+  
+  /* Optional: Status badge for movies (e.g., "New Release", "Last Day") */
+  .movie-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(229, 9, 20, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }

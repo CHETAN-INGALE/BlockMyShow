@@ -5,7 +5,7 @@
   }
   
   .banner-image {
-    object-fit: cover;
+    object-fit: absolute;
     height: 400px;
   }
   
