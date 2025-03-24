@@ -50,7 +50,7 @@ def verifyUser(email, session_token):
     if user.get('session_token') != session_token:
         return 401
 
-    if not user.get('first_name') or not user.get('last_name'):
+    if not user.get('first_name') or not user.get('last_name') or not user.get('mobile_number'):
         return 201
 
     return 200
@@ -83,9 +83,26 @@ def get_random_movie():
     except Exception as e:
         return {"error": str(e)}
 
-
-
-
+def update_user_details(user_collection, email, session_token, first_name, last_name, mobile_number):
+    verifyStatus = verifyUser(email, session_token)
+    if verifyStatus == 201:
+        try:
+            user_collection.update_one(
+                {"email": email},
+                {
+                    "$set": {
+                        "first_name": first_name,
+                        "last_name": last_name,
+                        "mobile_number": mobile_number
+                    }
+                }
+            )
+            return 200
+        except Exception as e:
+            print(f"Error updating user details: {e}")
+            return 500
+    else:
+        return verifyStatus
 
 def disconnect():
     client.close()

@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from contextlib import asynccontextmanager
 import secrets
 from mailer import sendEmail
-from database import disconnect, verifyUser, updateSessionKey, get_random_movie
+from database import disconnect, verifyUser, updateSessionKey, get_random_movie, update_user_details
 
 class Email(BaseModel):
     email: str
@@ -13,6 +13,13 @@ class Email(BaseModel):
 class Auth(BaseModel):
     email: str
     sessionKey: str
+
+class User(BaseModel):
+    email: str
+    sessionKey: str
+    firstName: str
+    lastName: str
+    mobileNumber: str
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -49,6 +56,20 @@ async def create_item(authData: Auth):
         return status.HTTP_201_CREATED, "User data incomplete"
     else:
         return status.HTTP_200_OK, "User authenticated"
+
+@app.post("/updateUserDetails/")
+async def updateUserDetails(userData: User):
+    verifyUserDetails = update_user_details(userData.email, userData.sessionKey, userData.firstName, userData.lastName, userData.mobileNumber)
+    if verifyUserDetails == 404:
+        return status.HTTP_404_NOT_FOUND, "User not found"
+    elif verifyUserDetails == 401:
+        return status.HTTP_401_UNAUTHORIZED, "Unauthorized"
+    elif verifyUserDetails == 200:
+        return status.HTTP_200_OK, "User details updated successfully"
+    else:
+        return status.HTTP_500_INTERNAL_SERVER_ERROR, "Error updating user details"
+        
+    
 
 @app.get("/movieAiringNow/")
 async def getRandomRovie():
