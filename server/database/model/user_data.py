@@ -3,7 +3,7 @@ def create_user_data_collection(db, collection_name):
         '$jsonSchema': {
             'bsonType': 'object',
             'additionalProperties': False,
-            'required': ['first_name', 'email', 'mobile_number', 'user_type'],
+            'required': ['email'],
             'properties': {
                 '_id': {
                     'bsonType': 'objectId',
