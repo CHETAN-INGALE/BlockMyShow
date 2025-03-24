@@ -16,7 +16,7 @@ def sendEmail(receiverEmail, sessionKey):
     message["Subject"] = "Login to BlockMyShow"
 
     # Email body
-    body = "Welcome to BlockMyShow! Click to login: http://localhost:3000/?sessionKey=" + sessionKey
+    body = "Welcome to BlockMyShow! Click to login: http://localhost:3000/auth/?sessionKey=" + sessionKey
     message.attach(MIMEText(body, "plain"))
 
     try:

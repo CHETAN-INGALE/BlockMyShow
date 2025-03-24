@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime
 import random
+import json
+from bson import ObjectId
 from database.model import user_data, event_data
 from database.handler import UserHandler
 
@@ -72,17 +74,6 @@ def updateSessionKey(email, sessionKey):
         print("An error occurred while updating session key:", str(e))
         return False
 
-def get_random_movie():
-    try:
-        all_movies = list(movies_collection.find())
-        if not all_movies:
-            return {"message": "No movies found in the database."}
-        random_movie = random.choice(all_movies)
-        random_movie["_id"] = str(random_movie["_id"])
-        return random_movie
-    except Exception as e:
-        return {"error": str(e)}
-
 def update_user_details(user_collection, email, session_token, first_name, last_name, mobile_number):
     verifyStatus = verifyUser(email, session_token)
     if verifyStatus == 201:
@@ -103,6 +94,28 @@ def update_user_details(user_collection, email, session_token, first_name, last_
             return 500
     else:
         return verifyStatus
+
+def get_random_movie():
+    try:
+        all_movies = list(movies_collection.find())
+        if not all_movies:
+            return {"message": "No movies found in the database."}
+        random_movie = random.choice(all_movies)
+        random_movie["_id"] = str(random_movie["_id"])
+        return random_movie
+    except Exception as e:
+        return {"error": str(e)}
+
+def get_movie_by_name(movie_name):
+    try:
+        movie = movies_collection.find_one({"name": movie_name})
+        if not movie:
+            return 404
+        if '_id' in movie:
+            movie['_id'] = str(movie['_id'])
+        return movie
+    except Exception as e:
+        return e
 
 def disconnect():
     client.close()
