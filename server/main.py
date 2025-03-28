@@ -1,13 +1,14 @@
 # Main api server made using fast api
 
-from fastapi import FastAPI, status, HTTPException
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from contextlib import asynccontextmanager
 import secrets
+
 from mailer import sendEmail
-import json
 from database import disconnect, verifyUser, updateSessionKey, get_random_movie, update_user_details, get_movie_by_name
+
 class Email(BaseModel):
     email: str
 
@@ -52,36 +53,36 @@ async def create_item(email: Email):
     
     addSKeyToDB = updateSessionKey(email.email, newSessionKey)
     if addSKeyToDB == False:
-        return status.HTTP_500_INTERNAL_SERVER_ERROR, "Error updating session key"
+        raise HTTPException(status_code=500, detail="Error updating session key")
     
     sendMail = sendEmail(email.email, newSessionKey)
     if sendMail == False:
-        return status.HTTP_500_INTERNAL_SERVER_ERROR, "Error sending email"
+        raise HTTPException(status_code=500, detail="Error sending email")
     raise HTTPException(status_code=200, detail="Email sent sucuessfully")
 
 @app.post("/auth/")
 async def create_item(authData: Auth):
     authStatus = verifyUser(authData.email, authData.sessionKey)
     if authStatus == 404:
-        return status.HTTP_404_NOT_FOUND, "User not found"
+        raise HTTPException(status_code=404, detail="User not found")
     elif authStatus == 401:
-        return status.HTTP_401_UNAUTHORIZED, "Unauthorized"
+        raise HTTPException(status_code=401, detail="Unauthorized")
     elif authStatus == 201:
-        return status.HTTP_201_CREATED, "User data incomplete"
+        raise HTTPException(status_code=201, detail="User data incomplete")
     else:
-        return status.HTTP_200_OK, "User authenticated"
+        raise HTTPException(status_code=200, detail="User authenticated")
 
 @app.post("/updateUserDetails/")
 async def updateUserDetails(userData: User):
     verifyUserDetails = update_user_details(userData.email, userData.sessionKey, userData.firstName, userData.lastName, userData.mobileNumber)
     if verifyUserDetails == 404:
-        return status.HTTP_404_NOT_FOUND, "User not found"
+        raise HTTPException(status_code=404, detail="User not found")
     elif verifyUserDetails == 401:
-        return status.HTTP_401_UNAUTHORIZED, "Unauthorized"
+        raise HTTPException(status_code=401, detail="Unauthorized")
     elif verifyUserDetails == 200:
-        return status.HTTP_200_OK, "User details updated successfully"
+        raise HTTPException(status_code=200, detail="User details updated successfully")
     else:
-        return status.HTTP_500_INTERNAL_SERVER_ERROR, "Error updating user details"
+        raise HTTPException(status_code=500, detail="Error updating user details")
         
     
 
@@ -92,11 +93,9 @@ async def getRandomMovie():
 @app.post("/movieByName/")
 async def getMovieByName(movieData: MovieData):
     movie = get_movie_by_name(movieData.movieName)
-    # print(movie)
-    # print(json.dumps(movie))
     if movie == 404:
-        return status.HTTP_404_NOT_FOUND, "Movie not found"
+        raise HTTPException(status_code=404, detail="Movie not found")
     elif movie == 500:
-        return status.HTTP_500_INTERNAL_SERVER_ERROR, "Error getting movie"
+        raise HTTPException(status_code=500, detail="Error getting movie")
     else:
         return movie

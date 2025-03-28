@@ -26,4 +26,6 @@ build/
 .env
 *.json
 *.test
+
+# temp file for filling db with movies from imdb
 moviedb.py
