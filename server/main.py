@@ -2,7 +2,7 @@
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from contextlib import asynccontextmanager
 import secrets
 
@@ -10,21 +10,22 @@ from mailer import sendEmail
 from database import disconnect, verifyUser, updateSessionKey, get_random_movie, update_user_details, get_movie_by_name
 
 class Email(BaseModel):
-    email: str
+    email: EmailStr
 
 class Auth(BaseModel):
-    email: str
-    sessionKey: str
+    email: EmailStr
+    sessionKey: str = '903c3dd2ce284119bb2a7ea28342395195794aa1d777523e54f15f10f6f46b3b6bbf436516310d12729791cec68ee416851a39e72136841a5c998be2c482d400'
 
 class User(BaseModel):
-    email: str
-    sessionKey: str
-    firstName: str
-    lastName: str
-    mobileNumber: str
+    email: EmailStr
+    sessionKey: str = '903c3dd2ce284119bb2a7ea28342395195794aa1d777523e54f15f10f6f46b3b6bbf436516310d12729791cec68ee416851a39e72136841a5c998be2c482d400'
+    firstName: str = 'Jhon'
+    lastName: str = 'Doe'
+    mobileNumber: str = '1234567890'
+
 
 class MovieData(BaseModel):
-    movieName: str
+    movieName: str = 'Avengers: Endgame'
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
