@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Navbar, Nav, Container, Button, Modal, Form, FormControl } from "react-bootstrap";
+import authAPI from '../api/authApi';
 
 const NavigationBar = () => {
   const [show, setShow] = useState(false);
@@ -11,8 +12,11 @@ const NavigationBar = () => {
   const handleShow = () => setShow(true);
   const handleSubmit = (e) => {
     e.preventDefault();
+    let res=authAPI.login({email: email});
+    console.log(res);
     alert(`Email submitted: ${email}`);  // Replace with authentication logic
-    setEmail("");
+    setEmail(email);
+
     handleClose();
   };
 
