@@ -2,10 +2,10 @@ import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_SERVER_API;
 const authAPI = {
-    register: async (userData) => {
+    auth: async (userData) => {
         try {
-            const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
-            return response.data;
+            const response = await axios.post(`${API_BASE_URL}/auth/`, userData);
+            return response;
         } catch (error) {
             throw error.response ? error.response.data : error;
         }

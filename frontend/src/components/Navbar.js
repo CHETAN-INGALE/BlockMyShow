@@ -16,7 +16,7 @@ const NavigationBar = () => {
     console.log(res);
     alert(`Email submitted: ${email}`);  // Replace with authentication logic
     setEmail(email);
-
+    localStorage.setItem("email", email);
     handleClose();
   };
 
