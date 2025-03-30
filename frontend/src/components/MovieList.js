@@ -1,9 +1,12 @@
 import React from "react";
 import MovieCard from "./MovieCard";
 import { Container, Row, Col } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
 
 const MovieList = () => {
-  const movies = [
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+  let movies = [
     { title: "Avengers", poster: "/images/avengers.jpg" },
     { title: "Batman", poster: "/images/batman.jpg" },
     { title: "Spiderman", poster: "/images/spiderman.jpg" },
@@ -20,9 +23,12 @@ const MovieList = () => {
     { title: "Captain America: Brave New World", poster: "/images/ca.jpg" },
     { title: "Yodha", poster: "/images/yodha.jpg" },
 
-    
+
   ];
 
+  if (isHomePage) {
+    movies= movies.slice(0, 6);
+  }
   return (
     <Container>
       <h2 className="my-4">Now Showing</h2>
@@ -36,5 +42,4 @@ const MovieList = () => {
     </Container>
   );
 };
-
 export default MovieList;
