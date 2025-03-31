@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar, Nav, Container, Button, Modal, Form, FormControl } from "react-bootstrap";
 import authAPI from '../api/authApi';
 
@@ -6,24 +6,41 @@ const NavigationBar = () => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Check if user is logged in
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) {
+      setIsAuthenticated(true);
+      setEmail(storedEmail);
+    }
+  }, []);
 
   // Handle Login Modal
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleSubmit = (e) => {
     e.preventDefault();
-    let res=authAPI.login({email: email});
+    let res = authAPI.login({ email: email });
     console.log(res);
-    alert(`Email submitted: ${email}`);  // Replace with authentication logic
-    setEmail(email);
+    alert(`Email submitted: ${email}`);
     localStorage.setItem("email", email);
+    setIsAuthenticated(true);
     handleClose();
+  };
+
+  // Handle Logout
+  const handleLogout = () => {
+    localStorage.removeItem("email");
+    setIsAuthenticated(false);
+    window.location.reload(); // Refresh the page to update UI
   };
 
   // Handle Search
   const handleSearch = (e) => {
     e.preventDefault();
-    alert(`Searching for: ${searchQuery}`);  // Replace with actual search functionality
+    alert(`Searching for: ${searchQuery}`);
     setSearchQuery("");
   };
 
@@ -51,10 +68,16 @@ const NavigationBar = () => {
               <Button variant="outline-light" type="submit">Search</Button>
             </Form>
 
-            {/* Login / Sign Up Button */}
-            <Button variant="outline-light" className="ms-3" onClick={handleShow}>
-              Login / Sign Up
-            </Button>
+            {/* Conditional Login / Logout Button */}
+            {isAuthenticated ? (
+              <Button variant="outline-light" className="ms-3" onClick={handleLogout}>
+                Logout
+              </Button>
+            ) : (
+              <Button variant="outline-light" className="ms-3" onClick={handleShow}>
+                Login / Sign Up
+              </Button>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>
