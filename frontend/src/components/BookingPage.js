@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useLocation } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
 const BookingPage = () => {
-  const { movieName } = useParams(); // Get movie name from URL
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const { movieName } = useParams();
+  const posterUrl = queryParams.get("poster_url");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -50,7 +53,7 @@ const BookingPage = () => {
       
         {/* Right Column - Optional: Add Movie Poster or Info */}
         <Col md={6} className="d-flex align-items-center justify-content-center">
-          <img src={`/images/${movieName.toLowerCase()}.jpg`} alt={movieName} style={{ width: "80%", borderRadius: "8px" }} />
+          <img src={posterUrl} alt={movieName} style={{ width: "80%", borderRadius: "8px" }} />
         </Col>
       </Row>
     </Container>

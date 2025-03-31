@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Navbar, Nav, Container, Button, Modal, Form, FormControl } from "react-bootstrap";
 import authAPI from '../api/authApi';
+import { getCookie, setCookie } from "../utils/cookie";
 
 const NavigationBar = () => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
+  //const [sessionKey, setSessionKey] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Check if user is logged in
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
-    if (storedEmail) {
+    const storedCookie = getCookie("sessionKey");
+    if (storedEmail && storedCookie) {
       setIsAuthenticated(true);
       setEmail(storedEmail);
+      //setSessionKey(storedCookie);
     }
   }, []);
 
@@ -33,6 +37,7 @@ const NavigationBar = () => {
   // Handle Logout
   const handleLogout = () => {
     localStorage.removeItem("email");
+    setCookie("sessionKey",null); // Expire the session cookie
     setIsAuthenticated(false);
     window.location.reload(); // Refresh the page to update UI
   };
