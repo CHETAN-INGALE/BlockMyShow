@@ -5,9 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from contextlib import asynccontextmanager
 import secrets
+import json
 
 from mailer import sendEmail
-from database import disconnect, verifyUser, updateSessionKey, get_random_movie, update_user_details, get_movie_by_name
+from database import disconnect, verifyUser, updateSessionKey, getNMovies, update_user_details, get_movie_by_name
 
 class Email(BaseModel):
     email: EmailStr
@@ -87,9 +88,20 @@ async def updateUserDetails(userData: User):
         
     
 
-@app.get("/movieAiringNow/")
-async def getRandomMovie():
-    return get_random_movie()
+@app.get("/movieAiringNow/{numberOfMovies}")
+async def getMoviesAiringNow(numberOfMovies: int):
+    if numberOfMovies <= 0:
+        raise HTTPException(status_code=400, detail="Number of movies must be greater than 0")
+    nMovies = getNMovies(numberOfMovies)
+    if nMovies == 404:
+        raise HTTPException(status_code=404, detail="No movies found")
+    elif nMovies == 500:
+        raise HTTPException(status_code=500, detail="Error getting movies")
+    else:
+        # for movies in nMovies:
+        #     movies['user_id'] = str(movies['user_id'])
+        return nMovies
+
 
 @app.post("/movieByName/")
 async def getMovieByName(movieData: MovieData):

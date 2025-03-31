@@ -48,13 +48,10 @@ def verifyUser(email, session_token):
     user = user_collection.find_one({"email": email})
     if not user:
         return 404
-
     if user.get('session_token') != session_token:
         return 401
-
     if not user.get('first_name') or not user.get('last_name') or not user.get('mobile_number'):
         return 201
-
     return 200
 
 def updateSessionKey(email, sessionKey):
@@ -74,7 +71,7 @@ def updateSessionKey(email, sessionKey):
         print("An error occurred while updating session key:", str(e))
         return False
 
-def update_user_details(user_collection, email, session_token, first_name, last_name, mobile_number):
+def update_user_details(email, session_token, first_name, last_name, mobile_number):
     verifyStatus = verifyUser(email, session_token)
     if verifyStatus == 201:
         try:
@@ -106,13 +103,25 @@ def get_random_movie():
     except Exception as e:
         return {"error": str(e)}
 
+def getNMovies(numberOfMovies):
+    try:
+        movies = event_collection.find({}, {"_id": 1, "event_name": 1, "poster_url": 1}).limit(numberOfMovies)
+        if not movies:
+            return 404
+        movies_list = list(movies)
+        return movies_list
+    except Exception as e:
+        print(f"Error getting movies: {e}")
+        return 500
+
+
 def get_movie_by_name(movie_name):
     try:
-        movie = movies_collection.find_one({"name": movie_name})
+        movie = event_collection.find_one({"event_name": movie_name})
         if not movie:
             return 404
-        if '_id' in movie:
-            movie['_id'] = str(movie['_id'])
+        if 'user_id' in movie:
+            movie['user_id'] = str(movie['user_id'])
         return movie
     except Exception as e:
         return e
@@ -124,5 +133,5 @@ def disconnect():
 initialize_database()
 db = client["BlockMyShow"]
 user_collection = db["user_data"]
-movies_collection = db["movies"]
+event_collection = db["event_data"]
 print("MongoDB connected to DB: BlockMyShow !!!")
