@@ -3,14 +3,14 @@ def create_user_event_collection(db, collection_name):
     result = db.create_collection(collection_name, validator={
         "$jsonSchema": {
             "bsonType": "object",
-            "required": ["_id", "user_id", "event_name", "event_datetime", "location", "poster_url", "rating_value", "total_seats", "available_seats"],
+            "required": ["_id", "user_id", "event_name", "event_datetime", "location", "event_description", "poster_url", "rating_value", "total_seats", "available_seats"],
             "properties": {
                 "_id": {
                     "bsonType": "int",
                     "description": "Event ID must be a valid ObjectId and is required"
                 },
                 "user_id": {
-                    "bsonType": "objectId",
+                    "bsonType": "int",
                     "description": "User ID must be a valid ObjectId and is required"
                 },
                 "event_name": {
@@ -24,6 +24,10 @@ def create_user_event_collection(db, collection_name):
                 "location": {
                     "bsonType": "string",
                     "description": "Event location must be a string and is required"
+                },
+                "event_description": {
+                    "bsonType": "string",
+                    "description": "Event description must be a string and is required"
                 },
                 "poster_url": {
                     "bsonType": "string",
