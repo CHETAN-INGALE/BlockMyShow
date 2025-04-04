@@ -239,6 +239,28 @@ def new_event(user_id, session_token, event_name, event_date_time, event_locatio
     else:
         return verifyStatus
 
+def book_event_seats(user_id, session_token, event_id, seats_to_book):
+    verifyStatus = verifyUserByID(user_id, session_token)
+    if verifyStatus == 200:
+        event = event_collection.find_one({"_id": event_id})
+        if not event:
+            return 404
+        available_seats = event.get("available_seats")
+        if available_seats < seats_to_book:
+            return 400
+        try:
+            event_collection.update_one(
+                {"_id": event_id},
+                {"$inc": {"available_seats": -seats_to_book}}
+            )
+            addToChain(event_id, available_seats, seats_to_book, user_id, event["user_id"])
+            return 200
+        except Exception as e:
+            print(f"Error booking event seats: {e}")
+            return 500
+    else:
+        return verifyStatus
+
 
 # Block data management functions
 def addToChain(event_id, available_seats, seats_to_book, user_id, event_owner_id):

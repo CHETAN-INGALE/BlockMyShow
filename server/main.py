@@ -2,14 +2,14 @@
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, EmailStr, HttpUrl
+from pydantic import BaseModel, EmailStr
 from contextlib import asynccontextmanager
 from datetime import datetime
 import secrets
-import json
 
 from mailer import sendEmail
-from database import disconnect, verifyUser, updateSessionKey, getNMovies, update_user_details, get_movie_by_name, new_event
+from database import disconnect, verifyUser, updateSessionKey, getNMovies, update_user_details, get_movie_by_name, new_event, book_event_seats
+
 
 # Pydantic Models
 class Email(BaseModel):
@@ -30,25 +30,43 @@ class MovieData(BaseModel):
     movieName: str = 'Avengers: Endgame'
 
 class EventData(BaseModel):
-    userId: int
-    userSessionKey: str
-    eventName: str
+    userId: int = 1
+    userSessionKey: str = '903c3dd2ce284119bb2a7ea28342395195794aa1d777523e54f15f10f6f46b3b6bbf436516310d12729791cec68ee416851a39e72136841a5c998be2c482d400'
+    eventName: str = 'Avengers: Endgame'
     eventDateTime: datetime
-    eventLocation: str
-    eventDescription: str
-    eventImageUrl: str
-    eventRating: float
-    ticketPrice: int
-    eventSeats: int
+    eventLocation: str = 'Miraj Cinemas'
+    eventDescription: str = 'Avengers: Endgame is a 2019 American superhero film based on the Marvel Comics superhero team the Avengers. It is the direct sequel to 2018\'s Avengers: Infinity War and the 22nd film in the Marvel Cinematic Universe (MCU).'
+    eventImageUrl: str = 'https://m.media-amazon.com/images/M/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_.jpg'
+    eventRating: float = 8.4
+    ticketPrice: int = 500
+    eventSeats: int = 120
+
+class EventBooingData(BaseModel):
+    userId: int = 1
+    userSessionKey: str = '903c3dd2ce284119bb2a7ea28342395195794aa1d777523e54f15f10f6f46b3b6bbf436516310d12729791cec68ee416851a39e72136841a5c998be2c482d400'
+    eventId: int = 3
+    eventSeats: int = 2
 
 
 # FastAPI stuff
+tags_metadata = [
+    {
+        "name": "users",
+        "description": "Operations with users. The **login** logic is also here.",
+    },
+    {
+        "name": "events",
+        "description": "Manage operations with events.",
+    },
+]
+
 app = FastAPI(
     title="BlockMyShow",
     version="0.1",
-    description="Hello, Welcome to our BlockMyShow"
+    description="Hello, Welcome to our BlockMyShow",
+    openapi_tags=tags_metadata
 )
-    
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -66,8 +84,8 @@ async def lifespan(app: FastAPI):
 
 
 # User related API
-@app.post("/login/")
-async def create_item(email: Email):
+@app.post("/login/", tags=["users"])
+async def Login(email: Email):
     newSessionKey = secrets.token_hex(64)
     # newUser = checkUser(email.email)
     
@@ -82,8 +100,8 @@ async def create_item(email: Email):
         raise HTTPException(status_code=500, detail="Error sending email")
     raise HTTPException(status_code=200, detail="Email sent sucuessfully")
 
-@app.post("/auth/")
-async def create_item(authData: Auth):
+@app.post("/auth/", tags=["users"])
+async def user_authentication(authData: Auth):
     authStatus = verifyUser(authData.email, authData.sessionKey)
     if authStatus == 404:
         raise HTTPException(status_code=404, detail="User not found")
@@ -94,8 +112,8 @@ async def create_item(authData: Auth):
     else:
         raise HTTPException(status_code=200, detail="User authenticated")
 
-@app.post("/updateUserDetails/")
-async def updateUserDetails(userData: User):
+@app.post("/updateUserDetails/", tags=["users"])
+async def Update_User_Details(userData: User):
     verifyUserDetails = update_user_details(userData.email, userData.sessionKey, userData.firstName, userData.lastName, userData.mobileNumber)
     if verifyUserDetails == 404:
         raise HTTPException(status_code=404, detail="User not found")
@@ -108,8 +126,8 @@ async def updateUserDetails(userData: User):
         
     
 # Movie realted API
-@app.get("/movieAiringNow/{numberOfMovies}")
-async def getMoviesAiringNow(numberOfMovies: int):
+@app.get("/movieAiringNow/{numberOfMovies}", tags=["events"])
+async def get_movies_airing_now(numberOfMovies: int):
     if numberOfMovies <= 0:
         raise HTTPException(status_code=400, detail="Number of movies must be greater than 0")
     nMovies = getNMovies(numberOfMovies)
@@ -122,8 +140,8 @@ async def getMoviesAiringNow(numberOfMovies: int):
         #     movies['user_id'] = str(movies['user_id'])
         return nMovies
 
-@app.post("/movieByName/")
-async def getMovieByName(movieData: MovieData):
+@app.post("/movieByName/", tags=["events"])
+async def Get_Movie_By_Name(movieData: MovieData):
     movie = get_movie_by_name(movieData.movieName)
     if movie == 404:
         raise HTTPException(status_code=404, detail="Movie not found")
@@ -132,8 +150,8 @@ async def getMovieByName(movieData: MovieData):
     else:
         return movie
 
-@app.post("/newEvent/")
-async def create_event(eventData: EventData):
+@app.post("/newEvent/", tags=["events"])
+async def Create_New_Event(eventData: EventData):
     newEvent = new_event(eventData.userId, eventData.userSessionKey, eventData.eventName, eventData.eventDateTime, eventData.eventLocation, eventData.eventDescription, eventData.eventImageUrl, eventData.eventRating, eventData.ticketPrice, eventData.eventSeats)
     if newEvent == 200:
         raise HTTPException(status_code=200, detail="Event added successfully")
@@ -148,3 +166,18 @@ async def create_event(eventData: EventData):
     else:
         raise HTTPException(status_code=400, detail="Bad request")
 
+@app.post("/bookEventTickets/", tags=["events"])
+async def Book_Event_Tickets(eventData: EventBooingData):
+    bookEvent = book_event_seats(eventData.userId, eventData.userSessionKey, eventData.eventId, eventData.eventSeats)
+    if bookEvent == 200:
+        raise HTTPException(status_code=200, detail="Event booked successfully")
+    elif bookEvent == 500:
+        raise HTTPException(status_code=500, detail="Error booking event")
+    elif bookEvent == 404:
+        raise HTTPException(status_code=404, detail="User not found")
+    elif bookEvent == 401:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    elif bookEvent == 201:
+        raise HTTPException(status_code=201, detail="User data incomplete")
+    else:
+        raise HTTPException(status_code=400, detail="Bad request")
