@@ -30,14 +30,15 @@ class MovieData(BaseModel):
     movieName: str = 'Avengers: Endgame'
 
 class EventData(BaseModel):
-    userId: str
+    userId: int
     userSessionKey: str
     eventName: str
     eventDateTime: datetime
     eventLocation: str
     eventDescription: str
-    eventImageUrl: HttpUrl
+    eventImageUrl: str
     eventRating: float
+    ticketPrice: int
     eventSeats: int
 
 
@@ -133,7 +134,7 @@ async def getMovieByName(movieData: MovieData):
 
 @app.post("/newEvent/")
 async def create_event(eventData: EventData):
-    newEvent = new_event(eventData.userId, eventData.userSessionKey, eventData.eventName, eventData.eventDateTime, eventData.eventLocation, eventData.eventDescription, eventData.eventImageUrl, eventData.eventRating, eventData.eventSeats)
+    newEvent = new_event(eventData.userId, eventData.userSessionKey, eventData.eventName, eventData.eventDateTime, eventData.eventLocation, eventData.eventDescription, eventData.eventImageUrl, eventData.eventRating, eventData.ticketPrice, eventData.eventSeats)
     if newEvent == 200:
         raise HTTPException(status_code=200, detail="Event added successfully")
     elif newEvent == 500:
@@ -146,3 +147,4 @@ async def create_event(eventData: EventData):
         raise HTTPException(status_code=201, detail="User data incomplete")
     else:
         raise HTTPException(status_code=400, detail="Bad request")
+

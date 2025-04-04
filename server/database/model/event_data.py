@@ -3,7 +3,7 @@ def create_user_event_collection(db, collection_name):
     result = db.create_collection(collection_name, validator={
         "$jsonSchema": {
             "bsonType": "object",
-            "required": ["_id", "user_id", "event_name", "event_datetime", "location", "event_description", "poster_url", "rating_value", "total_seats", "available_seats"],
+            "required": ["_id", "user_id", "event_name", "event_datetime", "location", "event_description", "poster_url", "rating_value", "ticket_price", "total_seats", "available_seats"],
             "properties": {
                 "_id": {
                     "bsonType": "int",
@@ -38,6 +38,11 @@ def create_user_event_collection(db, collection_name):
                     "minimum": 0.0,
                     "maximum": 10.0,
                     "description": "Rating off the Event"
+                },
+                "ticket_price": {
+                    "bsonType": "int",
+                    "minimum": 1,
+                    "description": "Price of the ticket must be a positive integer and is required"
                 },
                 "total_seats": {
                     "bsonType": "int",

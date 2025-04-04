@@ -2,7 +2,7 @@ from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-import random
+import hashlib
 import json
 from bson import ObjectId
 from database.model import user_data, event_data, blocks
@@ -66,10 +66,63 @@ def get_next_event_id():
     )
     return counter["seq"]
 
+def decrement_event_id():
+    counter = counters_collection.find_one_and_update(
+        {"_id": "event_id"},
+        {"$inc": {"seq": -1}},
+        return_document=True
+    )
+    return counter["seq"]
+
+def get_next_block_id():
+    counter = counters_collection.find_one_and_update(
+        {"_id": "block"},
+        {"$inc": {"seq": 1}},
+        return_document=True
+    )
+    return counter["seq"]
+
+def decrement_block_id():
+    counter = counters_collection.find_one_and_update(
+        {"_id": "block"},
+        {"$inc": {"seq": -1}},
+        return_document=True
+    )
+    return counter["seq"]
+
+def get_last_block_hash():
+    last_block_hash_doc = counters_collection.find_one({"_id": "last_block_hash"})
+    if last_block_hash_doc:
+        return last_block_hash_doc["hash"]
+    else:
+        return 500
+
+def update_last_block_hash(block_hash):
+    try:
+        counters_collection.update_one(
+            {"_id": "last_block_hash"},
+            {"$set": {"hash": block_hash}},
+            upsert=True
+        )
+    except Exception as e:
+        print(f"Error updating last block hash: {e}")
+        return 500
+    return 200
+
 
 # User data managemnet functions
 def verifyUser(email, session_token):
     user = user_collection.find_one({"email": email})
+    if not user:
+        return 404
+    if user.get('session_token') != session_token:
+        return 401
+    if not user.get('first_name') or not user.get('last_name') or not user.get('mobile_number'):
+        return 201
+    return 200
+
+def verifyUserByID(_id, session_token):
+    user = user_collection.find_one({"_id": _id})
     if not user:
         return 404
     if user.get('session_token') != session_token:
@@ -159,12 +212,13 @@ def get_movie_by_name(movie_name):
     except Exception as e:
         return e
 
-def new_event(user_id, session_token, event_name, event_date_time, event_location, event_description, event_poster_url, event_rating, total_seats):
-    verifyStatus = verifyUser(user_id, session_token)
+def new_event(user_id, session_token, event_name, event_date_time, event_location, event_description, event_poster_url, event_rating, ticket_price, total_seats):
+    verifyStatus = verifyUserByID(user_id, session_token)
     if verifyStatus == 200:
         try:
+            next_event_id = get_next_event_id()
             event_collection.insert_one({
-                "_id": get_next_event_id(),
+                "_id": next_event_id,
                 "user_id": user_id,
                 "event_name": event_name,
                 "event_datetime": event_date_time,
@@ -172,11 +226,14 @@ def new_event(user_id, session_token, event_name, event_date_time, event_locatio
                 "event_description": event_description,
                 "poster_url": event_poster_url,
                 "rating_value": event_rating,
+                "ticket_price": ticket_price,
                 "total_seats": total_seats,
                 "available_seats": total_seats
             })
+            addToChain(next_event_id, total_seats, total_seats, user_id, 0)
             return 200
         except Exception as e:
+            decrement_event_id()
             print(f"Error creating new event: {e}")
             return 500
     else:
@@ -184,6 +241,46 @@ def new_event(user_id, session_token, event_name, event_date_time, event_locatio
 
 
 # Block data management functions
+def addToChain(event_id, available_seats, seats_to_book, user_id, event_owner_id):
+    date_time = datetime.now().isoformat()
+    seat_array = list(range(available_seats, available_seats - seats_to_book, -1))
+    
+    data = {
+        "date_time": date_time,
+        "event_id": event_id,
+        "seat_array": seat_array,
+        "previous_owner_id": event_owner_id,
+        "new_owner_id": user_id
+    }
+    
+    normalized_data_str = json.dumps(data, separators=(',', ':'), sort_keys=True)
+    data_hash = hashlib.sha256(normalized_data_str.encode()).hexdigest()
+    
+    block_id = get_next_block_id()
+    previous_block_hash = get_last_block_hash()
+    if previous_block_hash == 500:
+        return 500
+    
+    block_data = {
+        "_id": block_id,
+        "data": data,
+        "data_hash": data_hash,
+        "previous_block_hash": previous_block_hash
+    }
+    
+    normalized_data_str = json.dumps(block_data, separators=(',', ':'), sort_keys=True)
+    data_hash = hashlib.sha256(normalized_data_str.encode()).hexdigest()
+    
+    try:
+        blocks_collection.insert_one(block_data)
+        update_last_block_hash(data_hash)
+    except Exception as e:
+        decrement_block_id()
+        print(f"Error inserting block data: {e}")
+        return 500
+    return 200
+
+
 
 
 
