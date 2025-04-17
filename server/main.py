@@ -8,7 +8,8 @@ from datetime import datetime
 import secrets
 
 from mailer import sendEmail
-from database import disconnect, verifyUser, updateSessionKey, getNMovies, update_user_details, get_movie_by_name, new_event, book_event_seats
+from database import disconnect, verifyUser, updateSessionKey, getNMovies, update_user_details, get_movie_by_name, new_event, book_event_seats, get_booking
+
 
 
 # Pydantic Models
@@ -47,6 +48,11 @@ class EventBooingData(BaseModel):
     eventId: int = 3
     eventSeats: int = 2
 
+class UserBookings(BaseModel):
+    userId: int = 1
+    userSessionKey: str = '903c3dd2ce284119bb2a7ea28342395195794aa1d777523e54f15f10f6f46b3b6bbf436516310d12729791cec68ee416851a39e72136841a5c998be2c482d400'
+
+
 
 # FastAPI stuff
 tags_metadata = [
@@ -57,6 +63,10 @@ tags_metadata = [
     {
         "name": "events",
         "description": "Manage operations with events.",
+    },
+    {
+        "name": "bookings",
+        "description": "Manage operations with bookings.",
     },
 ]
 
@@ -81,6 +91,7 @@ async def lifespan(app: FastAPI):
     yield
     
     disconnect()
+
 
 
 # User related API
@@ -123,8 +134,9 @@ async def Update_User_Details(userData: User):
         raise HTTPException(status_code=200, detail="User details updated successfully")
     else:
         raise HTTPException(status_code=500, detail="Error updating user details")
-        
-    
+
+
+
 # Movie realted API
 @app.get("/movieAiringNow/{numberOfMovies}", tags=["events"])
 async def get_movies_airing_now(numberOfMovies: int):
@@ -181,3 +193,20 @@ async def Book_Event_Tickets(eventData: EventBooingData):
         raise HTTPException(status_code=201, detail="User data incomplete")
     else:
         raise HTTPException(status_code=400, detail="Bad request")
+
+
+
+# Booking related API
+@app.post("/getBookingDetails/", tags=["bookings"])
+async def Get_Booking_Details(userBookings: UserBookings):
+    bookingDetails = get_booking(userBookings.userId, userBookings.userSessionKey)
+    if bookingDetails == 500:
+        raise HTTPException(status_code=500, detail="Error fetching booking details")
+    elif bookingDetails == 404:
+        raise HTTPException(status_code=404, detail="User not found")
+    elif bookingDetails == 401:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    elif bookingDetails == 201:
+        raise HTTPException(status_code=201, detail="User data incomplete")
+    else:
+        return bookingDetails

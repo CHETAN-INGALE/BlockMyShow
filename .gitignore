@@ -31,5 +31,6 @@ build/
 *.json
 *.test
 
-# temp file for filling db with movies from imdb
+# temp file
 moviedb.py
+nodes/

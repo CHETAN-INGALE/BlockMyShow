@@ -1,3 +1,4 @@
+from numpy import add
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
@@ -254,6 +255,8 @@ def book_event_seats(user_id, session_token, event_id, seats_to_book):
                 {"$inc": {"available_seats": -seats_to_book}}
             )
             addToChain(event_id, available_seats, seats_to_book, user_id, event["user_id"])
+            seats_array = list(range(available_seats, available_seats - seats_to_book, -1))
+            add_booking(user_id, event_id, seats_array)
             return 200
         except Exception as e:
             print(f"Error booking event seats: {e}")
@@ -303,8 +306,28 @@ def addToChain(event_id, available_seats, seats_to_book, user_id, event_owner_id
     return 200
 
 
+# Booking data management functions
+def add_booking(user_id, event_id, seats_booked):
+    try:
+        booking_collection.update_one(
+            {"_id": user_id},
+            {"$set": {str(event_id): seats_booked}},
+            upsert=True  # Creates the document if it doesn't exist
+        )
+        return 200
+    except Exception as e:
+        print(f"Error adding booking: {e}")
+        return 500
 
-
+def get_booking(user_id, session_token):
+    verifyStatus = verifyUserByID(user_id, session_token)
+    if verifyStatus == 200:
+        booking = booking_collection.find_one({"_id": user_id})
+        if not booking:
+            return 404
+        return booking
+    else:
+        return verifyStatus
 
 # Initialization of MongoDB connection and collections
 initialize_database()
@@ -312,5 +335,6 @@ db = client["BlockMyShow"]
 user_collection = db["user_data"]
 event_collection = db["event_data"]
 blocks_collection = db["blocks"]
+booking_collection = db["booking"]
 counters_collection = db["counters"]
 print("MongoDB connected to DB: BlockMyShow !!!")
