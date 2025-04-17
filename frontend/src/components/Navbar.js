@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Navbar,
-  Nav,
-  Container,
-  Button,
-  Modal,
-  Form,
-  FormControl,
+import {Navbar,Nav,Container,Button,Modal,Form,FormControl,
 } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
 import authAPI from "../api/authApi";
