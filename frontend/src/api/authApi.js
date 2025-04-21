@@ -43,6 +43,14 @@ const authAPI = {
             throw error.response ? error.response.data : error;
         }
     },
+    updateUser: async (userData) => {
+        try {
+            const response = await axios.post(`${API_BASE_URL}/updateUserDetails/`, userData);
+            return response;
+        } catch (error) {
+            throw error.response ? error.response.data : error;
+        }
+    },
 };
 
 export default authAPI;

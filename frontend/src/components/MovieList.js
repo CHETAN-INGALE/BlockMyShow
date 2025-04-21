@@ -9,8 +9,10 @@ const MovieList =() => {
   const isHomePage = location.pathname === "/";
 
   const [movies, setMovies] = useState([]);
-
+  const hasRunAuth = React.useRef(false);
   useEffect(() => {
+    if (hasRunAuth.current) return;
+    hasRunAuth.current = true;
     movieAPI.getMovies(20).then((response) => {
       console.log(response.data);
       if (isHomePage) {

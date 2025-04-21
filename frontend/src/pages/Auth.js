@@ -25,9 +25,13 @@ const Auth = () => {
       if (res.status === 200) {
         alert("Authentication successful");
         navigate("/");
-      } else {
+      }else if (res.status === 201) {
+        alert (res.data.detail); 
+        navigate("/",{state: {from:"auth"}});
+      }
+      else {
         navigate("/");
-        alert(res.detail);
+        alert(res.status);
       }
     }).catch((error) => {
       console.error("Authentication error", error);
@@ -38,7 +42,7 @@ const Auth = () => {
       alert("Authentication failed");
       navigate("/");
     });
-  }, [sessionKey, navigate]);
+  }, [sessionKey, navigate,email]);
   
   return (
     <div>

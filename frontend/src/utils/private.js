@@ -12,15 +12,10 @@ const ProtectedRoute = ({ email, sessionKey, children }) => {
                 const res = await authAPI.auth({ email, sessionKey });
                 if (res.status === 200) {
                     setIsAuthenticated(true);
-                } else {
-                    console.log("Auth Response", res);
-                    setIsAuthenticated(false);
-                    navigator("/"); // Redirect to home page
                 }
             } catch (error) {
                 console.error("Authentication error:", error);
-                setIsAuthenticated(false);
-                navigator("/"); // Redirect to home page
+                navigator("/auth"); // Redirect to home page
             }
         };
         authenticate();

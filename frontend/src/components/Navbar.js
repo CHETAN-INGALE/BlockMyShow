@@ -4,6 +4,7 @@ import {Navbar,Nav,Container,Button,Modal,Form,FormControl,
 import { FaUserCircle } from "react-icons/fa";
 import authAPI from "../api/authApi";
 import { getCookie, setCookie } from "../utils/cookie";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -26,8 +27,28 @@ const NavigationBar = () => {
     const storedUserInfo = localStorage.getItem("userInfo");
 
     if (storedEmail && storedCookie) {
-      setIsAuthenticated(true);
-      setEmail(storedEmail);
+      authAPI.auth({ email: storedEmail, sessionKey: storedCookie }).then((res) => {
+        if (res.status === 200) {
+          setIsAuthenticated(true);
+          //setUserInfo(JSON.parse(storedUserInfo));
+          setEmail(storedEmail);
+          setCookie("sessionKey", storedCookie, { path: "/" });
+          
+        } 
+      }).catch((error) => {
+          localStorage.removeItem("email");
+          localStorage.removeItem("userInfo");
+          setIsAuthenticated(false);
+          setEmail("");
+          setUserInfo({
+            firstName: "",
+            lastName: "",
+            mobileNumber: "",
+          });
+          setCookie("sessionKey", null, { expires: new Date(0) });
+          setShowLogin(true);
+          setShowUserForm(false);
+      });
     }
 
     if (storedUserInfo) {
@@ -45,17 +66,25 @@ const NavigationBar = () => {
     alert(`Logged in as: ${email}`);
     localStorage.setItem("email", email);
     setIsAuthenticated(true);
-    setShowLogin(false);
+    handleLoginClose();
   };
 
   // Logout
+  const navigator = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("email");
     setCookie("sessionKey", null);
+    alert("Logged out successfully");
+    setEmail("");
+    setUserInfo({
+      firstName: "",
+      lastName: "",
+      mobileNumber: "",
+    });
+    localStorage.removeItem("userInfo");
     setIsAuthenticated(false);
-    window.location.reload();
-  };
-
+    navigator("/");
+  }
   // Search
   const handleSearch = (e) => {
     e.preventDefault();
@@ -76,13 +105,44 @@ const NavigationBar = () => {
   const handleUserInfoSave = (e) => {
     e.preventDefault();
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
-    alert("User details saved!");
+    const userData = {
+      email: localStorage.getItem("email"),
+      sessionKey: getCookie("sessionKey"),
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
+      mobileNumber: userInfo.mobileNumber,
+    };
+    authAPI.updateUser(userData)
+      .then((res) => {
+        if (res.status === 200) {
+          setShowUserForm(false);
+          alert("User details saved!");
+          setIsAuthenticated(true);
+        }
+        else {
+          alert("Error updating user details");
+        }
+      })
     setShowUserForm(false);
   };
 
   const handleChange = (e) => {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   };
+
+  // Handle From Auth
+  const location = useLocation();
+  const hasRunAuth = React.useRef(false);
+  useEffect(() => {
+    if (hasRunAuth.current) return; // Prevent running this effect again
+    hasRunAuth.current = true; // Set the ref to true after the first run
+    if (location.state) {
+      if (location.state.from === "auth") {
+        setShowUserForm(true);
+      }
+    }
+  }, [location]);
+
 
   return (
     <>

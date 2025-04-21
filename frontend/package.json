@@ -1,6 +1,6 @@
 {
   "name": "BlockMyShow",
-  "version": "0.1.2",
+  "version": "0.1.6",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
@@ -10,6 +10,7 @@
     "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
     "dotenv": "^16.4.7",
+    "html5-qrcode": "^2.3.8",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
