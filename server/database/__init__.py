@@ -1,3 +1,4 @@
+from turtle import up
 from numpy import add
 from pymongo import MongoClient
 import os
@@ -122,6 +123,16 @@ def verifyUser(email, session_token):
         return 201
     return 200
 
+def verifyUserWithData(email, session_token):
+    user = user_collection.find_one({"email": email})
+    if not user:
+        return 404
+    if user.get('session_token') != session_token:
+        return 401
+    if not user.get('first_name') or not user.get('last_name') or not user.get('mobile_number'):
+        return 201
+    return user
+
 def verifyUserByID(_id, session_token):
     user = user_collection.find_one({"_id": _id})
     if not user:
@@ -169,7 +180,7 @@ def updateSessionKey(email, sessionKey):
 
 def update_user_details(email, session_token, first_name, last_name, mobile_number):
     verifyStatus = verifyUser(email, session_token)
-    if verifyStatus == 201:
+    if verifyStatus == 201 or verifyStatus == 200:
         try:
             user_collection.update_one(
                 {"email": email},

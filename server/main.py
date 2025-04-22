@@ -8,7 +8,7 @@ from datetime import datetime
 import secrets
 
 from mailer import sendEmail
-from database import disconnect, verifyUser, updateSessionKey, getNMovies, update_user_details, get_movie_by_name, new_event, book_event_seats, get_booking
+from database import disconnect, verifyUserWithData, updateSessionKey, getNMovies, update_user_details, get_movie_by_name, new_event, book_event_seats, get_booking
 
 
 
@@ -113,7 +113,7 @@ async def Login(email: Email):
 
 @app.post("/auth/", tags=["users"])
 async def user_authentication(authData: Auth):
-    authStatus = verifyUser(authData.email, authData.sessionKey)
+    authStatus = verifyUserWithData(authData.email, authData.sessionKey)
     if authStatus == 404:
         raise HTTPException(status_code=404, detail="User not found")
     elif authStatus == 401:
@@ -121,7 +121,7 @@ async def user_authentication(authData: Auth):
     elif authStatus == 201:
         raise HTTPException(status_code=201, detail="User data incomplete")
     else:
-        raise HTTPException(status_code=200, detail="User authenticated")
+        return authStatus
 
 @app.post("/updateUserDetails/", tags=["users"])
 async def Update_User_Details(userData: User):
