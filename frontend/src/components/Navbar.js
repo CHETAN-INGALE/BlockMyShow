@@ -32,8 +32,7 @@ const NavigationBar = () => {
           setIsAuthenticated(true);
           //setUserInfo(JSON.parse(storedUserInfo));
           setEmail(storedEmail);
-          setCookie("sessionKey", storedCookie, { path: "/" });
-          
+          setCookie("sessionKey", storedCookie, { expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),path: "/" });
         } 
       }).catch((error) => {
           localStorage.removeItem("email");
@@ -132,10 +131,7 @@ const NavigationBar = () => {
 
   // Handle From Auth
   const location = useLocation();
-  const hasRunAuth = React.useRef(false);
   useEffect(() => {
-    if (hasRunAuth.current) return; // Prevent running this effect again
-    hasRunAuth.current = true; // Set the ref to true after the first run
     if (location.state) {
       if (location.state.from === "auth") {
         setShowUserForm(true);

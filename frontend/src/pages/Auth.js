@@ -18,12 +18,19 @@ const Auth = () => {
     hasRun.current = true;
 
     if (sessionKey) {
-      setCookie("sessionKey", sessionKey, { path: "/" });
+      setCookie("sessionKey", sessionKey, { expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), path: "/" });
+
     }
     authAPI.auth({ email: email, sessionKey: sessionKey }).then((res) => {
-      console.log("Auth Response", res.detail);
       if (res.status === 200) {
         alert("Authentication successful");
+        console.log("Auth Response", res.data);
+        let userInfo={
+            firstName: res.data.first_name,
+            lastName: res.data.last_name,  
+            mobileNumber: res.data.mobile_number,
+          };
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
         navigate("/");
       }else if (res.status === 201) {
         alert (res.data.detail); 
@@ -42,7 +49,9 @@ const Auth = () => {
       alert("Authentication failed");
       navigate("/");
     });
-  }, [sessionKey, navigate,email]);
+    // eslint-disable-next-line
+  }, [sessionKey, navigate]);
+
   
   return (
     <div>
