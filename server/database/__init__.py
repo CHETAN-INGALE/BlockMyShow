@@ -1,5 +1,3 @@
-from turtle import up
-from numpy import add
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
@@ -339,6 +337,18 @@ def get_booking(user_id, session_token):
         return booking
     else:
         return verifyStatus
+
+def verify_booking(user_id, movie_id, seats_booked):
+    booking = booking_collection.find_one({"_id": user_id})
+    if not booking:
+        return 404
+    if str(movie_id) not in booking:
+        return 404
+    booked_seats = booking[str(movie_id)]
+    if booked_seats == seats_booked:
+        return 200
+    else:
+        return 400
 
 # Initialization of MongoDB connection and collections
 initialize_database()

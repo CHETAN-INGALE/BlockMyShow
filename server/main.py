@@ -1,14 +1,14 @@
 # Main api server made using fast api
-
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
+from typing import List
 from contextlib import asynccontextmanager
 from datetime import datetime
 import secrets
 
 from mailer import sendEmail
-from database import disconnect, verifyUserWithData, updateSessionKey, getNMovies, update_user_details, get_movie_by_name, new_event, book_event_seats, get_booking
+from database import disconnect, verifyUserWithData, updateSessionKey, getNMovies, update_user_details, get_movie_by_name, new_event, book_event_seats, get_booking, verify_booking
 
 
 
@@ -52,7 +52,10 @@ class UserBookings(BaseModel):
     userId: int = 1
     userSessionKey: str = '903c3dd2ce284119bb2a7ea28342395195794aa1d777523e54f15f10f6f46b3b6bbf436516310d12729791cec68ee416851a39e72136841a5c998be2c482d400'
 
-
+class QrData(BaseModel):
+    userId: int = 1
+    movieId: int = 3
+    seatsBooked: List[int] = [5, 6, 7]
 
 # FastAPI stuff
 tags_metadata = [
@@ -210,3 +213,13 @@ async def Get_Booking_Details(userBookings: UserBookings):
         raise HTTPException(status_code=201, detail="User data incomplete")
     else:
         return bookingDetails
+
+@app.post("/qrVerify", tags=["bookings"])
+async def QR_Verify(qrData: QrData):
+    verifyQr = verify_booking(qrData.userId, qrData.movieId, qrData.seatsBooked)
+    if verifyQr == 404:
+        raise HTTPException(status_code=404, detail="User or Movie not found")
+    elif verifyQr == 400:
+        raise HTTPException(status_code=400, detail="Seats Does not exist")
+    else:
+        raise HTTPException(status_code=200, detail="QR code verified successfully")
