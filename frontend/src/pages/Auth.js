@@ -26,6 +26,7 @@ const Auth = () => {
         alert("Authentication successful");
         console.log("Auth Response", res.data);
         let userInfo={
+            userId: res.data._id,
             firstName: res.data.first_name,
             lastName: res.data.last_name,  
             mobileNumber: res.data.mobile_number,

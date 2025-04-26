@@ -33,17 +33,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Auth />} />  
           <Route path="/movies" element={<Movies />} />
+          {/* <Route path="/book/:movieName" element={<BookingPage />} /> */}
           {/* Protected Route for Booking Page */}
-          <Route
-            path="/book/:movieName"
-            element={
-              <ProtectedRoute
-                email={localStorage.getItem("email")}
-                sessionKey={sessionKey}>
-                <BookingPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/book/:movieName" element={<ProtectedRoute email={localStorage.getItem("email")} sessionKey={sessionKey}> <BookingPage /> </ProtectedRoute>}/>
           <Route path="/nft" element={<NFT />} />
           <Route path="*" element={<Home />} />
       </Routes>
