@@ -31,7 +31,6 @@ const BookingPage = () => {
     movieAPI.getMovieByName(movieDetails).then((res) => {
       if (res.status === 200) {
         setMovieDetails(res.data);
-        console.log(res);
       }
     });
     if (movieDetails.available_seats === 0) {
@@ -48,8 +47,6 @@ const BookingPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //\n Movie: ${movieName}\nTickets: ${formData.tickets}
-    toast.success(`Booking Confirmed! `);
     // Redirect to payment page or API call
     let bookingDetails = {
       userId: JSON.parse(localStorage.getItem("userInfo")).userId,
@@ -60,7 +57,6 @@ const BookingPage = () => {
     bookingAPI.bookTickets(bookingDetails).then((res) => {
       if (res.status === 200) {
         toast.success("Booking Confirmed!");
-        console.log(res);
       } else {
         toast.error("Booking Failed!");
       }

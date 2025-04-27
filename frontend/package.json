@@ -1,6 +1,6 @@
 {
   "name": "BlockMyShow",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
@@ -16,6 +16,7 @@
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
+    "react-qr-code": "^2.0.15",
     "react-router-dom": "^7.4.0",
     "react-scripts": "5.0.1",
     "react-slick": "^0.30.3",

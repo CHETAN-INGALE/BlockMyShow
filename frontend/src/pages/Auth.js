@@ -55,11 +55,12 @@ const Auth = () => {
 
   
   return (
-    <div>
+    <div style={{ minHeight: "77vh", display: "flex", flexDirection: "column" }}>
       <h1>Authentication</h1>
       <div style={{ marginTop: "20px", marginBottom: "20px" }}>
         <p>Redirecting...</p>
       </div>
+      <div style={{ flexGrow: 1 }}></div>
     </div>
   );
 };
