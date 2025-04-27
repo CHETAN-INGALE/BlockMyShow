@@ -9,6 +9,7 @@ import Movies from "./pages/Movies";  // Import Movies Page
 import Auth from "./pages/Auth";  // Import Auth Page
 import NFT from "./pages/NFT"; //Verify NFT
 import Tickets from "./pages/Tickets"; //View Tickets
+import About from "./pages/About";
 
 import ProtectedRoute from "./utils/private"; // Import Protected Route
 import {getCookie} from "./utils/cookie"; // Import Cookie Utility
@@ -38,8 +39,9 @@ function App() {
           {/* Protected Route for Booking Page */}
           <Route path="/book/:movieName" element={<ProtectedRoute email={localStorage.getItem("email")} sessionKey={sessionKey}> <BookingPage /> </ProtectedRoute>}/>
           <Route path="/tickets" element={<ProtectedRoute email={localStorage.getItem("email")} sessionKey={sessionKey}> <Tickets/> </ProtectedRoute>}/>
-          <Route path="/nft" element={<ProtectedRoute email={localStorage.getItem("email")} sessionKey={sessionKey}> <NFT/> </ProtectedRoute>}/>
+          <Route path="/nft" element={<NFT/>}/>
           <Route path="*" element={<Home />} />
+          <Route path="/about" element={<About />} />
       </Routes>
       <ToastContainer
         position="bottom-right"

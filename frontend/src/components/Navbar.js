@@ -200,6 +200,7 @@ const NavigationBar = () => {
             >
               <NavDropdown.Item onClick={()=>{navigator("/nft")}}>NFT</NavDropdown.Item>
               <NavDropdown.Item onClick={()=>{navigator("/tickets")}}>Tickets</NavDropdown.Item>
+              <NavDropdown.Item onClick={()=>{navigator("/about")}}>About</NavDropdown.Item>
             </NavDropdown>
           </Navbar.Collapse>
         </Container>

@@ -43,7 +43,7 @@ const NFT = () => {
     }, [showScanner]);
 
     return (
-        <div style={{ minHeight: "77vh", display: "flex", flexDirection: "column" }}>
+        <div style={{ minHeight: "81vh", display: "flex", flexDirection: "column" }}>
             <h1>NFT</h1>
             {showScanner && <Scanner onDecode={handleDecodedText} />}
             <div>

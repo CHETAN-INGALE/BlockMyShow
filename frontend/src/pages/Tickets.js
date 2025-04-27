@@ -16,7 +16,7 @@ const Tickets = () => {
     }, []);
 
     return (
-        <div style={{ minHeight: "77vh", display: "flex", flexDirection: "column" }}>
+        <div style={{ minHeight: "81vh", display: "flex", flexDirection: "column" }}>
             <h1>Your Tickets</h1>
             <TicketList bookingDetails={bookingDetails} />
             <div style={{ flexGrow: 1 }}></div>

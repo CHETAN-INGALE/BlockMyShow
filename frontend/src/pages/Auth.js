@@ -55,7 +55,7 @@ const Auth = () => {
 
   
   return (
-    <div style={{ minHeight: "77vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "81vh", display: "flex", flexDirection: "column" }}>
       <h1>Authentication</h1>
       <div style={{ marginTop: "20px", marginBottom: "20px" }}>
         <p>Redirecting...</p>
