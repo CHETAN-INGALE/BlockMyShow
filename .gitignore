@@ -28,7 +28,6 @@ build/
 
 #Credential files
 .env
-*.json
 *.test
 
 # temp file

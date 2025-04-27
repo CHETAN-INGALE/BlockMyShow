@@ -1,0 +1,302 @@
+[
+    {
+        "_id": 1,
+        "user_id": 1,
+        "event_name": "12th Fail",
+        "event_datetime": {
+            "$date": "2025-07-01T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "The real-life story of IPS Officer Manoj Kumar Sharma and IRS Officer Shraddha Joshi.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BNTE3OTIxZDYtNjA0NC00N2YxLTg1NGQtOTYxNmZkMDkwOWNjXkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 8.8,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 2,
+        "user_id": 1,
+        "event_name": "3 Idiots",
+        "event_datetime": {
+            "$date": "2025-07-02T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "Two friends are searching for their long lost companion. They revisit their college days and recall the memories of their friend who inspired them to think differently, even as the rest of the world called them \"idiots\".",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BNzc4ZWQ3NmYtODE0Ny00YTQ4LTlkZWItNTBkMGQ0MmUwMmJlXkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 8.4,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 3,
+        "user_id": 1,
+        "event_name": "Taare Zameen Par",
+        "event_datetime": {
+            "$date": "2025-07-03T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "A story about a dyslexic child and his art teacher who helps him find his way.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BNjVmMTlkNGYtYTM2OC00Yjc2LWIyYmQtMDY4ZmU1MWRlMjA3XkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 8.3,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 4,
+        "user_id": 1,
+        "event_name": "The Dark Knight",
+        "event_datetime": {
+            "$date": "2025-07-16T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "When a menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman, James Gordon and Harvey Dent must work together to put an end to the madness.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
+        "rating_value": 9.1,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 5,
+        "user_id": 1,
+        "event_name": "Coco",
+        "event_datetime": {
+            "$date": "2025-07-19T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "Aspiring musician Miguel, confronted with his family's ancestral ban on music, enters the Land of the Dead to find his great-great-grandfather, a legendary singer",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BMDIyM2E2NTAtMzlhNy00ZGUxLWI1NjgtZDY5MzhiMDc5NGU3XkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 8.4,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 6,
+        "user_id": 1,
+        "event_name": "Drishyam",
+        "event_datetime": {
+            "$date": "2025-07-06T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "Desperate measures are taken by a man who tries to save his family from the dark side of the law, after they commit an unexpected crime.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BM2NmMGFjYTYtNWEwNS00MTM4LWE2ZTktNzZjMTE0OTQyNjFiXkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 8.2,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 7,
+        "user_id": 1,
+        "event_name": "Munna Bhai M.B.B.S.",
+        "event_datetime": {
+            "$date": "2025-07-07T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "A gangster sets out to fulfill his father's dream of becoming a doctor.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BOTNhYTgyYTAtYWE5My00NDk1LTg3MGYtMTJmYjNhMzY2OTQ4XkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 8.1,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 8,
+        "user_id": 1,
+        "event_name": "Chhichhore",
+        "event_datetime": {
+            "$date": "2025-07-08T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "A tragic incident forces Anirudh, a middle-aged man, to take a trip down memory lane and reminisce his college days along with his friends, who were labelled as losers.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BODgwYWE2MGEtYTMwYi00NTg5LWEzOWYtNTFiZDc4NWMzODcyXkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 8.3,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 9,
+        "user_id": 1,
+        "event_name": "Tumbbad",
+        "event_datetime": {
+            "$date": "2025-07-09T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "A mythological story about a goddess who created the entire universe. The plot revolves around the consequences when humans build a temple for her first-born.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BMzVjNGFmZTMtYjRjNi00OWQzLTlkNWQtZmU1OGI0ODc2ODU5XkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 8.2,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 10,
+        "user_id": 1,
+        "event_name": "Sairat",
+        "event_datetime": {
+            "$date": "2025-07-10T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "In interior Maharashtra, a fisherman's son and a local politician's daughter fall in love against the restrictions of caste hierarchy.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BNTJmZWM3NWItMWE0MS00NjI1LWI3YjAtM2EzNmY5YmNiYzNjXkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 8.3,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 11,
+        "user_id": 1,
+        "event_name": "PK",
+        "event_datetime": {
+            "$date": "2025-07-11T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "An alien on Earth loses the only device he can use to communicate with his spaceship. His innocent nature and child-like questions force the country to evaluate the impact of religious views on people.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BMTYzOTE2NjkxN15BMl5BanBnXkFtZTgwMDgzMTg0MzE@._V1_.jpg",
+        "rating_value": 8.1,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 12,
+        "user_id": 1,
+        "event_name": "Barfi!",
+        "event_datetime": {
+            "$date": "2025-07-12T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "Three young people learn that love can neither be defined nor contained by society's definition of normal and abnormal.Three young people learn that love can neither be defined nor contained by society's definition of normal and abnormal.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BMTQzMTEyODY2Ml5BMl5BanBnXkFtZTgwMjA0MDUyMjE@._V1_.jpg",
+        "rating_value": 8.1,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 13,
+        "user_id": 1,
+        "event_name": "OMG: Oh My God!",
+        "event_datetime": {
+            "$date": "2025-07-13T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "A shopkeeper takes God to court when his shop is destroyed by an earthquake.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BMzhmY2E3MDctYjAzOS00ZmQyLTk2M2QtODg0MWU0Y2VjNWRkXkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 8.1,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 14,
+        "user_id": 1,
+        "event_name": "Queen of the Ring",
+        "event_datetime": {
+            "$date": "2025-07-14T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "A Delhi girl from a traditional family sets out on a solo honeymoon after her marriage gets cancelled.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BYTc2Y2U5MGUtODI4NS00YWRjLTk2OTUtYjA1NDdlMjNlYmYxXkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 7.1,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 15,
+        "user_id": 1,
+        "event_name": "The Shawshank Redemption",
+        "event_datetime": {
+            "$date": "2025-07-15T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "A banker convicted of uxoricide forms a friendship over a quarter century with a hardened convict, while maintaining his innocence and trying to remain hopeful through simple compassion.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BMDAyY2FhYjctNDc5OS00MDNlLThiMGUtY2UxYWVkNGY2ZjljXkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 9.3,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 16,
+        "user_id": 1,
+        "event_name": "Dangal",
+        "event_datetime": {
+            "$date": "2025-07-04T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "Mahavir Singh Phogat, a former wrestler, decides to fulfill his dream of winning a gold medal for his country by training his daughters for the Commonwealth Games despite the existing social stigmas.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BMTQ4MzQzMzM2Nl5BMl5BanBnXkFtZTgwMTQ1NzU3MDI@._V1_.jpg",
+        "rating_value": 8.3,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 17,
+        "user_id": 1,
+        "event_name": "Forrest Gump",
+        "event_datetime": {
+            "$date": "2025-07-17T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "The history of the United States from the 1950s to the '70s unfolds from the perspective of an Alabama man with an IQ of 75, who yearns to be reunited with his childhood sweetheart.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BMzUyOTViYjUtZmMwMC00ZTE5LTg2MWQtYWQzYzE5MDc5MGMxXkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 8.8,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 18,
+        "user_id": 1,
+        "event_name": "Inception",
+        "event_datetime": {
+            "$date": "2025-07-18T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O., but his tragic past may doom the project and his team to disaster.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg",
+        "rating_value": 8.8,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 19,
+        "user_id": 1,
+        "event_name": "Drishyam 2",
+        "event_datetime": {
+            "$date": "2025-07-05T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "A gripping tale of an investigation and a family which is threatened by it. Will Georgekutty be able to protect his family this time?",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BNGYyY2I5MzktMDg2MC00Nzc4LWIwNmYtMjg3NzE1ODQyMDllXkEyXkFqcGc@._V1_.jpg",
+        "rating_value": 8.2,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    },
+    {
+        "_id": 20,
+        "user_id": 1,
+        "event_name": "Avengers: Endgame",
+        "event_datetime": {
+            "$date": "2025-07-20T15:30:00.000Z"
+        },
+        "location": "Miraj Cinema",
+        "event_description": "After the devastating events of Avengers: Infinity War (2018), the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
+        "poster_url": "https://m.media-amazon.com/images/M/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_.jpg",
+        "rating_value": 8.4,
+        "ticket_price": 200,
+        "total_seats": 60,
+        "available_seats": 60
+    }
+]
