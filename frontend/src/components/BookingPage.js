@@ -86,7 +86,7 @@ const BookingPage = () => {
 
         {/* Right Column - Optional: Add Movie Poster or Info */}
         <Col md={6} className="d-flex align-items-center justify-content-center">
-          <img src={movieDetails.poster_url} alt={movieName} style={{ width: "80%", borderRadius: "8px" }} />
+          <img src={movieDetails.poster_url} alt={movieName} style={{height: "100%", width: "20vw", borderRadius: "8px" ,objectFit: "contain"}} />
         </Col>
       </Row>
 

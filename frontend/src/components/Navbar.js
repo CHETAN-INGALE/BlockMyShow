@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {Navbar, Nav, Container, Button, Modal, Form, FormControl} from "react-bootstrap";
+import { Navbar, Nav, Container, Button, Modal, Form, FormControl, NavDropdown } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
+import { TiThMenu } from "react-icons/ti";
 import authAPI from "../api/authApi";
 import { getCookie, setCookie } from "../utils/cookie";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -50,7 +51,8 @@ const NavigationBar = () => {
   // Search
   const handleSearch = (e) => {
     e.preventDefault();
-    alert(`Searching for: ${searchQuery}`);
+    navigator(`/book/${searchQuery}`);
+    console.log(`Searching for: ${searchQuery}`);
     setSearchQuery("");
   };
 
@@ -180,9 +182,6 @@ const NavigationBar = () => {
             {/* Auth Buttons */}
             {isAuthenticated ? (
               <>
-                <Button variant="outline-light" className="ms-3" onClick={handleLogout}>
-                  Logout
-                </Button>
                 <FaUserCircle
                   size={28}
                   style={{ color: "white", cursor: "pointer", marginLeft: "15px" }}
@@ -194,6 +193,14 @@ const NavigationBar = () => {
                 Login / Sign Up
               </Button>
             )}
+            <NavDropdown
+              title={<TiThMenu size={28} style={{ color: "white" }} />}
+              id="basic-nav-dropdown"
+              className="ms-3"
+            >
+              <NavDropdown.Item href="/nft">NFT</NavDropdown.Item>
+              <NavDropdown.Item href="/tickets">Tickets</NavDropdown.Item>
+            </NavDropdown>
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -259,7 +266,10 @@ const NavigationBar = () => {
                 required
               />
             </Form.Group>
-            <Button variant="dark" type="submit" className="w-100">
+            <Button variant="danger" className="w-100 mt-3" onClick={handleLogout}>
+              Logout
+            </Button>
+            <Button variant="dark" type="submit" className="w-100 mt-3">
               Save
             </Button>
           </Form>
