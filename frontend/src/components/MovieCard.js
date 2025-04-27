@@ -7,7 +7,7 @@ const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
 
   const handleBookNow = () => {
-    navigate(`/book/${movie.event_name}/?poster_url=${movie.poster_url}`);
+    navigate(`/book/${movie.event_name}`);
   };
 
   return (

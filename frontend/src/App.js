@@ -54,8 +54,7 @@ function App() {
         theme="light"
         transition={Slide}
       />
-      {window.location.pathname === "/nft" ? <Footer Style={{position: "fixed"}}/> : <Footer/>}
-      
+      <Footer/>
     </Router>
   );
 }

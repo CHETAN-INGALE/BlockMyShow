@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Rate from 'rc-rate';
 import 'rc-rate/assets/index.css';
@@ -14,10 +14,7 @@ import formatDate from "../utils/date"; // Import formatDate utility
 
 
 const BookingPage = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
   const { movieName } = useParams();
-  const posterUrl = queryParams.get("poster_url");
 
   const [movieDetails, setMovieDetails] = useState({ movieName: movieName });
   const [blockBooking, setblockBooking] = useState(false);
@@ -31,6 +28,7 @@ const BookingPage = () => {
     movieAPI.getMovieByName(movieDetails).then((res) => {
       if (res.status === 200) {
         setMovieDetails(res.data);
+        console.log(movieDetails.poster_url);
       }
     });
     if (movieDetails.available_seats === 0) {
@@ -88,7 +86,7 @@ const BookingPage = () => {
 
         {/* Right Column - Optional: Add Movie Poster or Info */}
         <Col md={6} className="d-flex align-items-center justify-content-center">
-          <img src={posterUrl} alt={movieName} style={{ width: "80%", borderRadius: "8px" }} />
+          <img src={movieDetails.poster_url} alt={movieName} style={{ width: "80%", borderRadius: "8px" }} />
         </Col>
       </Row>
 
