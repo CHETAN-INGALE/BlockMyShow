@@ -150,7 +150,7 @@ def updateSessionKey(email, sessionKey):
         hashed_session_key = hashlib.sha256(sessionKey.encode()).hexdigest()
         if user:
             last_token_time = user.get("last_session_token_time")
-            if last_token_time and datetime.now() - last_token_time < timedelta(minutes=2):
+            if last_token_time and datetime.now() - last_token_time < timedelta(seconds=2):
                 return 429
             else:
                 user_collection.update_one(
