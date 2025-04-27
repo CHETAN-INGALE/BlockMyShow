@@ -115,7 +115,8 @@ def verifyUser(email, session_token):
     user = user_collection.find_one({"email": email})
     if not user:
         return 404
-    if user.get('session_token') != session_token:
+    hashed_session_token = hashlib.sha256(session_token.encode()).hexdigest()
+    if user.get('session_token') != hashed_session_token:
         return 401
     if not user.get('first_name') or not user.get('last_name') or not user.get('mobile_number'):
         return 201
@@ -125,7 +126,8 @@ def verifyUserWithData(email, session_token):
     user = user_collection.find_one({"email": email})
     if not user:
         return 404
-    if user.get('session_token') != session_token:
+    hashed_session_token = hashlib.sha256(session_token.encode()).hexdigest()
+    if user.get('session_token') != hashed_session_token:
         return 401
     if not user.get('first_name') or not user.get('last_name') or not user.get('mobile_number'):
         return 201
@@ -135,7 +137,8 @@ def verifyUserByID(_id, session_token):
     user = user_collection.find_one({"_id": _id})
     if not user:
         return 404
-    if user.get('session_token') != session_token:
+    hashed_session_token = hashlib.sha256(session_token.encode()).hexdigest()
+    if user.get('session_token') != hashed_session_token:
         return 401
     if not user.get('first_name') or not user.get('last_name') or not user.get('mobile_number'):
         return 201
@@ -144,6 +147,7 @@ def verifyUserByID(_id, session_token):
 def updateSessionKey(email, sessionKey):
     try:
         user = user_collection.find_one({"email": email})
+        hashed_session_key = hashlib.sha256(sessionKey.encode()).hexdigest()
         if user:
             last_token_time = user.get("last_session_token_time")
             if last_token_time and datetime.now() - last_token_time < timedelta(minutes=2):
@@ -153,7 +157,7 @@ def updateSessionKey(email, sessionKey):
                     {"email": email},
                     {
                         "$set": {
-                            "session_token": sessionKey,
+                            "session_token": hashed_session_key,
                             "last_session_token_time": datetime.now()
                         }
                     }
@@ -164,7 +168,7 @@ def updateSessionKey(email, sessionKey):
                 {"email": email},
                 {
                     "$set": {
-                        "session_token": sessionKey,
+                        "session_token": hashed_session_key,
                         "last_session_token_time": datetime.now(),
                         "_id": get_next_user_id()
                     }
