@@ -4,7 +4,7 @@ import { Modal } from "react-bootstrap";
 import QRCode from "react-qr-code";
 import "../../styles/TicketCard.css";
 
-const TicketCard = ({ movieTitle,movieId, seatNumber, posterUrl }) => {
+const TicketCard = ({ movieTitle, movieId, seatNumber, posterUrl }) => {
     const [ticketPopupVisible, setTicketPopupVisible] = React.useState(false);
     let stringqr = JSON.stringify({
         userId: JSON.parse(localStorage.getItem("userInfo")).userId,
@@ -15,16 +15,20 @@ const TicketCard = ({ movieTitle,movieId, seatNumber, posterUrl }) => {
     const handleViewDetails = () => {
         console.log("QR Code String:", stringqr);
         setTicketPopupVisible(true);
-        
+
     };
 
     return (
         <>
             <Modal show={ticketPopupVisible} onHide={() => setTicketPopupVisible(false)} centered>
                 <Modal.Body>
+                    <br />
                     <div style={{ textAlign: "center" }}>
                         <QRCode value={stringqr} />
                     </div>
+                    <h5 style={{ textAlign: "center", marginTop: "1rem" }}>
+                        <strong>{movieTitle}</strong>
+                    </h5>
                 </Modal.Body>
             </Modal>
             <Card

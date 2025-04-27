@@ -198,8 +198,8 @@ const NavigationBar = () => {
               id="basic-nav-dropdown"
               className="ms-3"
             >
-              <NavDropdown.Item href="/nft">NFT</NavDropdown.Item>
-              <NavDropdown.Item href="/tickets">Tickets</NavDropdown.Item>
+              <NavDropdown.Item onClick={()=>{navigator("/nft")}}>NFT</NavDropdown.Item>
+              <NavDropdown.Item onClick={()=>{navigator("/tickets")}}>Tickets</NavDropdown.Item>
             </NavDropdown>
           </Navbar.Collapse>
         </Container>

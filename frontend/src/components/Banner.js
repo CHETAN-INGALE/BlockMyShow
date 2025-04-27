@@ -8,7 +8,7 @@ const Banner = () => {
       <Carousel interval={3000} indicators={true} pause="hover">
         {/* Movie 1 */}
         <Carousel.Item>
-          <img className="d-block w-100 banner-image" src="/images/movie1.jpg" alt="Movie 1" />
+          <img className="d-block w-100 banner-image" src="/images/init.jpg" alt="Movie 1" />
           <Carousel.Caption className="banner-text">
             <h2>🚀 The Biggest Blockbuster of 2025!</h2>
             <p>🔥 Now in Theaters Near You</p>
@@ -17,7 +17,7 @@ const Banner = () => {
 
         {/* Movie 2 */}
         <Carousel.Item>
-          <img className="d-block w-100 banner-image" src="/images/movie2.jpg" alt="Movie 2" />
+          <img className="d-block w-100 banner-image" src="/images/st.jpg" alt="Movie 2" />
           <Carousel.Caption className="banner-text">
             <h2>🎬 Action Thriller You Can't Miss!</h2>
             <p>Book Your Tickets Now 🍿</p>
@@ -26,7 +26,7 @@ const Banner = () => {
 
         {/* Movie 3 */}
         <Carousel.Item>
-          <img className="d-block w-100 banner-image" src="/images/movie3.jpg" alt="Movie 3" />
+          <img className="d-block w-100 banner-image" src="/images/batman.jpg" alt="Movie 3" />
           <Carousel.Caption className="banner-text">
             <h2>✨ A Magical Adventure Awaits</h2>
             <p>Only in Cinemas 🏆</p>
