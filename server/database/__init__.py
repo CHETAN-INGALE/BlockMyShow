@@ -318,11 +318,24 @@ def addToChain(event_id, available_seats, seats_to_book, user_id, event_owner_id
 # Booking data management functions
 def add_booking(user_id, event_id, seats_booked):
     try:
-        booking_collection.update_one(
-            {"_id": user_id},
-            {"$set": {str(event_id): seats_booked}},
-            upsert=True  # Creates the document if it doesn't exist
+        # First check if the event_id exists for this user
+        existing_booking = booking_collection.find_one(
+            {"_id": user_id, str(event_id): {"$exists": True}}
         )
+        
+        if existing_booking:
+            # If event exists, append the new seats to the existing array
+            booking_collection.update_one(
+                {"_id": user_id},
+                {"$push": {str(event_id): {"$each": seats_booked}}}
+            )
+        else:
+            # If event doesn't exist, set it with the new seats array
+            booking_collection.update_one(
+                {"_id": user_id},
+                {"$set": {str(event_id): seats_booked}},
+                upsert=True  # Creates the document if it doesn't exist
+            )
         return 200
     except Exception as e:
         print(f"Error adding booking: {e}")
