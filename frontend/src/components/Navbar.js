@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {Navbar,Nav,Container,Button,Modal,Form,FormControl,
-} from "react-bootstrap";
+import {Navbar, Nav, Container, Button, Modal, Form, FormControl} from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
 import authAPI from "../api/authApi";
 import { getCookie, setCookie } from "../utils/cookie";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const NavigationBar = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -20,51 +20,14 @@ const NavigationBar = () => {
     mobileNumber: "",
   });
 
-  // Check if user is logged in
-  useEffect(() => {
-    const storedEmail = localStorage.getItem("email");
-    const storedCookie = getCookie("sessionKey");
-    const storedUserInfo = localStorage.getItem("userInfo");
-
-    if (storedEmail && storedCookie) {
-      authAPI.auth({ email: storedEmail, sessionKey: storedCookie }).then((res) => {
-        if (res.status === 200) {
-          setIsAuthenticated(true);
-          //setUserInfo(JSON.parse(storedUserInfo));
-          setEmail(storedEmail);
-          setCookie("sessionKey", storedCookie, { expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),path: "/" });
-        } 
-      }).catch((error) => {
-          localStorage.removeItem("email");
-          localStorage.removeItem("userInfo");
-          setIsAuthenticated(false);
-          setEmail("");
-          setUserInfo({
-            firstName: "",
-            lastName: "",
-            mobileNumber: "",
-          });
-          setCookie("sessionKey", null, { expires: new Date(0) });
-          setShowLogin(true);
-          setShowUserForm(false);
-      });
-    }
-
-    if (storedUserInfo) {
-      setUserInfo(JSON.parse(storedUserInfo));
-    }
-  }, []);
-
   // Handle Login Modal
   const handleLoginClose = () => setShowLogin(false);
   const handleLoginShow = () => setShowLogin(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    authAPI.login({ email: email });
-    alert(`Logged in as: ${email}`);
-    localStorage.setItem("email", email);
-    setIsAuthenticated(true);
+    authAPI.login({ email: email })
+    //setIsAuthenticated(true);
     handleLoginClose();
   };
 
@@ -131,13 +94,61 @@ const NavigationBar = () => {
 
   // Handle From Auth
   const location = useLocation();
+
   useEffect(() => {
     if (location.state) {
       if (location.state.from === "auth") {
-        setShowUserForm(true);
+        if (location.state?.status === "success") {
+          setIsAuthenticated(true);
+          toast.success("Authentication successful");
+        }
+        else if (location.state?.status === "missingData") {
+          setShowUserForm(true);
+          toast.info("Missing user data, please fill in your details");
+        }
+        else if (location.state) {
+          console.log("Step 3: ", location.state.status);
+          setShowLogin(true);
+          setIsAuthenticated(false);
+        }
       }
     }
   }, [location]);
+
+  // Check Authentication
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    const storedCookie = getCookie("sessionKey");
+    const storedUserInfo = localStorage.getItem("userInfo");
+
+    if (storedEmail && storedCookie) {
+      authAPI.auth({ email: storedEmail, sessionKey: storedCookie }).then((res) => {
+        if (res.status === 200) {
+          setIsAuthenticated(true);
+          //setUserInfo(JSON.parse(storedUserInfo));
+          setEmail(storedEmail);
+          setCookie("sessionKey", storedCookie, { expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), path: "/" });
+        }
+      }).catch((error) => {
+        localStorage.removeItem("email");
+        localStorage.removeItem("userInfo");
+        setIsAuthenticated(false);
+        setEmail("");
+        setUserInfo({
+          firstName: "",
+          lastName: "",
+          mobileNumber: "",
+        });
+        setCookie("sessionKey", null, { expires: new Date(0) });
+        setShowUserForm(false);
+      });
+    }
+
+    if (storedUserInfo) {
+      setUserInfo(JSON.parse(storedUserInfo));
+    }
+    // eslint-disable-next-line
+  }, []);
 
 
   return (

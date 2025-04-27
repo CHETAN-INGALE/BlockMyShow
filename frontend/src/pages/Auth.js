@@ -32,10 +32,10 @@ const Auth = () => {
             mobileNumber: res.data.mobile_number,
           };
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
-        navigate("/");
+        navigate("/",{state: {from:"auth",status:'success'}});
       }else if (res.status === 201) {
         alert (res.data.detail); 
-        navigate("/",{state: {from:"auth"}});
+        navigate("/",{state: {from:"auth",status:'missingData'}});
       }
       else {
         navigate("/");

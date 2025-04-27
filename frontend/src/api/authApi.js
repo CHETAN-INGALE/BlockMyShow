@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const API_BASE_URL = process.env.REACT_APP_SERVER_API;
 const authAPI = {
@@ -15,7 +16,14 @@ const authAPI = {
         try {
             console.log("Credentials",API_BASE_URL);
             const response = await axios.post(`${API_BASE_URL}/login/`, credentials);
-            console.log("Email Link Send",response.data);
+            if (response.status === 200) {
+                localStorage.setItem("email", credentials.email);
+                toast.info(`Logged in as: ${credentials.email}`);
+                console.log("Email Link Send",response.data);
+            }
+            else {
+                console.log("Error in login");
+            }
             return response.data;
         } catch (error) {
             throw error.response ? error.response.data : error;

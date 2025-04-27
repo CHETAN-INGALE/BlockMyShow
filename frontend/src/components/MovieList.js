@@ -14,7 +14,6 @@ const MovieList =() => {
     if (hasRunAuth.current) return;
     hasRunAuth.current = true;
     movieAPI.getMovies(20).then((response) => {
-      console.log(response.data);
       if (isHomePage) {
         setMovies(response.data.slice(0, 6));
       } else {

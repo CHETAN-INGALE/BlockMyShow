@@ -7,11 +7,12 @@ import Footer from "./components/Footer";  // Import Footer
 import BookingPage from "./components/BookingPage";  // Import Booking Page
 import Movies from "./pages/Movies";  // Import Movies Page
 import Auth from "./pages/Auth";  // Import Auth Page
-import NFT from "./pages/NFT";
+import NFT from "./pages/NFT"; //Verify NFT
+import Tickets from "./pages/Tickets"; //View Tickets
 
 import ProtectedRoute from "./utils/private"; // Import Protected Route
 import {getCookie} from "./utils/cookie"; // Import Cookie Utility
-
+import { ToastContainer, Slide } from "react-toastify"; // Import Toast Notifications
 
 
 function App() {
@@ -36,10 +37,25 @@ function App() {
           {/* <Route path="/book/:movieName" element={<BookingPage />} /> */}
           {/* Protected Route for Booking Page */}
           <Route path="/book/:movieName" element={<ProtectedRoute email={localStorage.getItem("email")} sessionKey={sessionKey}> <BookingPage /> </ProtectedRoute>}/>
-          <Route path="/nft" element={<NFT />} />
+          <Route path="/tickets" element={<ProtectedRoute email={localStorage.getItem("email")} sessionKey={sessionKey}> <Tickets/> </ProtectedRoute>}/>
+          <Route path="/nft" element={<ProtectedRoute email={localStorage.getItem("email")} sessionKey={sessionKey}> <NFT/> </ProtectedRoute>}/>
           <Route path="*" element={<Home />} />
       </Routes>
-      <Footer />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Slide}
+      />
+      {window.location.pathname === "/nft" ? <Footer Style={{position: "fixed"}}/> : <></>}
+      
     </Router>
   );
 }
