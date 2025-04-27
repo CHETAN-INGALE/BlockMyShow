@@ -15,17 +15,31 @@ def sendEmail(receiverEmail, sessionKey):
     message["To"] = receiverEmail
     message["Subject"] = "Login to BlockMyShow"
 
-    # Email body
-    body = "Welcome to BlockMyShow! Click to login: http://localhost:3000/auth/?sessionKey=" + sessionKey
-    message.attach(MIMEText(body, "plain"))
+    html_body = f"""
+    <html>
+        <body style="margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <div style="text-align: center;">
+                <h2>Welcome to BlockMyShow!</h2>
+                <p>Click the button below to login:</p>
+                <a href="https://blockmyshow.pages.dev/auth/?sessionKey={sessionKey}" 
+                   style="display:inline-block; padding:10px 20px; font-size:16px; text-align:center; 
+                          text-decoration:none; background-color:#007bff; color:white; 
+                          border-radius:5px;">
+                   Login Now
+                </a>
+            </div>
+        </body>
+    </html>
+    """
+
+    message.attach(MIMEText(html_body, "html"))
 
     try:
-        # Connect to the SMTP server
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:
-            server.starttls()  # Secure the connection
+        # Connect securely to SMTP using SSL
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
             server.login(sender_email, password)
             server.send_message(message)
             return True
     except Exception as e:
-        print("Error sending email: \n", e)
+        print("Error sending email via SSL: \n", e)
         return False
