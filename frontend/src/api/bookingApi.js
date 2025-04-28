@@ -56,10 +56,10 @@ const bookingAPI = {
                 };
             } else {
                 toast.error("Error fetching booking details");
-                return response;
             }
         } catch (error) {
-            throw error.response ? error.response.data : error;
+            toast.error("Error fetching booking details");
+            return error;
         }
     },
 

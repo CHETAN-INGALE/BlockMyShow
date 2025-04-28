@@ -46,6 +46,8 @@ const NavigationBar = () => {
     });
     localStorage.removeItem("userInfo");
     setIsAuthenticated(false);
+    //setShowUserForm(false);
+    // setShowLogin(true);
     navigator("/");
   }
   // Search
@@ -88,6 +90,10 @@ const NavigationBar = () => {
         }
       })
     setShowUserForm(false);
+    setTimeout(() => {
+      navigator(`/auth/?sessionKey=${getCookie("sessionKey")}`);
+    }, 3000);
+    
   };
 
   const handleChange = (e) => {
