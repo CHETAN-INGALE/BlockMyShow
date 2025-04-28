@@ -33,3 +33,8 @@ build/
 # temp file
 moviedb.py
 nodes/
+
+.env
+.DS_Store
+.vscode
+
