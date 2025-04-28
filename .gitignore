@@ -1,3 +1,40 @@
+# Ignore Python virtual environment
+venv/
+
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.venv
+*.venv
+
+# VS Code settings
+.vscode/
+.settings.json
+
+# MacOS-specific files
+.DS_Store
+
+# Logs and other output
+*.log
+
+# Python egg and cache files
+*.egg
+*.egg-info/
+dist/
+build/
+
+#Credential files
+.env
+*.test
+
+# temp file
+moviedb.py
+nodes/
+
 .env
 .DS_Store
 .vscode
+
