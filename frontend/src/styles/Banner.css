@@ -1,0 +1,33 @@
+.banner-container {
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+
+  }
+  
+  .banner-image {
+    object-fit: cover;
+    height: 400px;
+  }
+  
+  .banner-text {
+    position: absolute;
+    bottom: 20px;
+    left: 5%;
+    text-align: left;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px 20px;
+    border-radius: 8px;
+  }
+  
+  .banner-text h2 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .banner-text p {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  

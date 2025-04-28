@@ -1,0 +1,15 @@
+.movie-card {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .movie-card img {
+    height: 300px;
+    object-fit: cover;
+  }
+  
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
